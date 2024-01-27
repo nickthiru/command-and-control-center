@@ -1,0 +1,45 @@
+openapi: "3.0.0"
+info:
+  title: App API
+  version: "1.0"
+tags:
+  - name: account
+    description: Account management service
+components:
+  schemas:
+    account:
+      type: object
+      description: An account represented by a Conito user pool
+      required:
+        - username
+        - password
+        - email
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+servers:
+  - url: https://rri1nqkdad.execute-api.us-east-1.amazonaws.com/prod
+    description: Basepath
+paths:
+  /account/sign-up:
+    description: Consumers can sign up for an account
+    post:
+      tags:
+        - account
+      description: Submit sign up form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/account"
+      responses:
+        "200":
+          description: Successfully signed up user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account"
