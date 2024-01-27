@@ -1,0 +1,103 @@
+openapi: "3.0.0"
+info:
+  title: Moview Review App API
+  version: "1.0"
+tags:
+  - name: account
+    description: Account management service
+servers:
+  - url: https://rri1nqkdad.execute-api.us-east-1.amazonaws.com/prod
+    description: Basepath
+paths:
+  /account/sign-up:
+    description: Consumers can sign up for an account
+    post:
+      tags:
+        - account
+      description: Submit sign up form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - Username
+                - Password
+                - Email
+              properties:
+                Username:
+                  type: string
+                Password:
+                  type: string
+                Email:
+                  type: string
+      responses:
+        "200":
+          description: Successfully signed up user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-sign-up"
+  /account/confirm-sign-up:
+      description: Confirm sign up by verifying OTP
+      post:
+        tags:
+          - account
+        # parameters:
+        #   - name: Authorization
+        #     description: Token from Cognito User Pool sign in
+        requestBody:
+          content:
+            application/json:
+              schema:
+                required:
+                  - ClientId
+                  - Username
+                  - ConfirmationCode
+                properties:
+                  ClientId:
+                    type: string
+                  Username:
+                    type: string
+                  ConfirmationCode:
+                    type: string
+        responses:
+          "200":
+            description: Successfully completed new account sign up
+            content:
+              application/json:
+                schema:
+                  properties:
+                    Message:
+                      type: string
+  /account/sign-in:
+        description: Sign in with username and password
+        post:
+          tags:
+            - account
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  required:
+                    - AuthFlow
+                    - ClientId
+                    - AuthParameters
+                  properties:
+                    AuthFlow:
+                      type: string
+                    ClientId:
+                      type: string
+                    AuthParameters:
+                      type: object
+                      properties:
+                        Authorization:
+                          type: string
+          responses:
+            "200":
+              description: Successfully completed new account sign up
+              content:
+                application/json:
+                  schema:
+                    properties:
+                      Message:
+                        type: string
