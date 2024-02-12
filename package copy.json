@@ -2,10 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/bdd",
-    "packages/cdk",
-    "packages/sensor",
-    "packages/web"
+    "packages/*"
   ],
   "dependencies": {},
   "devDependencies": {
