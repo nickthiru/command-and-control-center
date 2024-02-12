@@ -1,0 +1,28 @@
+{
+  "name": "node-red",
+  "version": "1.0.0",
+  "description": "Node-RED Certificate Broker for AWS IoT",
+  "author": "Nick Thiru <nickthiru@gmail.com>",
+  "license": "ISC",
+  "main": "lib/node-red.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickthiru/command-and-control-center.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nickthiru/command-and-control-center/issues"
+  },
+  "homepage": "https://github.com/nickthiru/command-and-control-center#readme",
+  "scripts": {
+    "start": "node node_modules/node-red/red.js --settings=./settings.js ./flows/flow.json",
+    "solution": "node node_modules/node-red/red.js --settings=./settings.js ./flows/flow_solved.json",
+    "test": "node ./__tests__/node-red.test.js"
+  },
+  "dependencies": {
+    "node-red": "^3.0.2",
+    "node-red-admin": "^3.0.0",
+    "node-red-contrib-device-stats": "^1.1.2",
+    "node-red-contrib-moment": "^4.0.0",
+    "node-red-dashboard": "^3.3.1"
+  }
+}
