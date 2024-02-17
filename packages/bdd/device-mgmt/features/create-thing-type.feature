@@ -9,28 +9,36 @@ Feature: Create Thing Type
 
         When ?
 
-          # 1. AWS
+          # AWS
 
-            # 1.1. IoT
-            # @aws-sdk/client-iot
+            # IoT
 
-             
+              # @aws-sdk/client-iot
+
+              CreateThingTypeCommand
+
+              Input:
+                - thingTypeName
+                - thingTypeDescription
               
+              Output:
+                - thingTypeName
+                - thingTypeArn
+                - thingTypeId
 
-            # 1.2. API
+
+            # API
 
               # "POST /device-mgmt/thing-type"
 
               # Add request validation
 
-              Return device cert, private key, Root CA cert
 
-
-            # 1.3. Lambda
+            # Lambda
 
 
 
-          # 2. Web
+          # Web
 
             # Create Thing Type form
 

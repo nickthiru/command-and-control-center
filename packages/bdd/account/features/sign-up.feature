@@ -9,33 +9,34 @@ Feature: Consumer account sign up with username and password
 
         When I sign up for an account
 
-          # 1. AWS
+          # AWS
 
-            # 1.1. Cognito
+            # Cognito
 
               # Create Cognito user pool and client for consumers
-              #   Allow self sign in
+                
+                # Allow self sign in
 
               # Create cognito authorizer. See Alex Horea course.
 
               # Attach cognito authorizer to API Gateway and all routes
 
 
-          # 1.2. API
+            # API
 
-            # "POST /account/sign-up"
+              # "POST /account/sign-up"
 
-            # Add request validation 
-
-          # 1.3. Lambda
+              # Add request validation 
 
 
+            # Lambda
 
-          # 2. Web
 
-          Account sign up page/form
+          # Web
 
-          Create unique hash for username (and let users sign in with email)
+          # Account sign up page/form
+
+          # Create unique hash for username (and let users sign in with email)
 
 
 
