@@ -15,16 +15,16 @@ Feature: Create Thing Type
 
               # @aws-sdk/client-iot
 
-              CreateThingTypeCommand
+              # CreateThingTypeCommand
 
-              Input:
-                - thingTypeName
-                - thingTypeDescription
+              # Input:
+              #   - thingTypeName
+              #   - thingTypeDescription
               
-              Output:
-                - thingTypeName
-                - thingTypeArn
-                - thingTypeId
+              # Output:
+              #   - thingTypeName
+              #   - thingTypeArn
+              #   - thingTypeId
 
 
             # API

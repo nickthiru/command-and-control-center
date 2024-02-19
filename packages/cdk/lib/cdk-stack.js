@@ -1,7 +1,8 @@
 const { Stack } = require('aws-cdk-lib');
-const { AuthStack } = require('./auth/main-stack');
-const { AccountStack } = require('./account/main-stack');
+// const { AuthStack } = require('./auth/main-stack');
+// const { AccountStack } = require('./account/main-stack');
 const { ApiStack } = require('./api/main-stack');
+const { DeviceMgmtStack } = require('./device-mgmt/main-stack');
 
 class CdkStack extends Stack {
   /**
@@ -13,19 +14,22 @@ class CdkStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    const authStack = new AuthStack(this, "AuthStack")
-    const consumerUserPoolId = authStack.consumerUserPool.userPoolId;
-    const consumerUserPoolClientId = authStack.consumerUserPoolClient.userPoolClientId;
+    // const authStack = new AuthStack(this, "AuthStack")
+    // const consumerUserPoolId = authStack.consumerUserPool.userPoolId;
+    // const consumerUserPoolClientId = authStack.consumerUserPoolClient.userPoolClientId;
 
 
-    const accountStack = new AccountStack(this, "AccountStack", {
-      consumerUserPoolClientId,
-    });
+    // const accountStack = new AccountStack(this, "AccountStack", {
+    //   consumerUserPoolClientId,
+    // });
+
+    const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack");
 
 
     new ApiStack(this, "ApiStack", {
-      authStack,
-      accountStack,
+      // authStack,
+      // accountStack,
+      deviceMgmtStack,
     });
 
   }

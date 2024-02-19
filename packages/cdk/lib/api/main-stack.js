@@ -1,32 +1,37 @@
 const { Stack, CfnOutput } = require("aws-cdk-lib");
 const { RestApi, Deployment, Stage, Cors, CognitoUserPoolsAuthorizer, AuthorizationType } = require("aws-cdk-lib/aws-apigateway");
-const { AccountApiEndpointsStack } = require("./account-api-endpoints-stack");
+const { AccountApiEndpointsStack } = require("./endpoints-stack/account");
+const { DeviceMgmtApiEndpointsStack } = require("./endpoints-stack/device-mgmt");
 
 class ApiStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
     console.log("(+) Inside 'ApiStack'");
 
-    const { authStack, accountStack } = props;
+    const {
+      // authStack,
+      // accountStack,
+      deviceMgmtStack,
+    } = props;
 
 
     /*** API ***/
 
     const restApi = new RestApi(this, "RestApi");
 
-    const authorizer = new CognitoUserPoolsAuthorizer(this, "CognitoUserPoolsAuthorizer", {
-      cognitoUserPools: [authStack.consumerUserPool],
-      identitySource: "method.request.header.Authorization",
-    });
-    authorizer._attachToApi(restApi);
+    // const authorizer = new CognitoUserPoolsAuthorizer(this, "CognitoUserPoolsAuthorizer", {
+    //   cognitoUserPools: [authStack.consumerUserPool],
+    //   identitySource: "method.request.header.Authorization",
+    // });
+    // authorizer._attachToApi(restApi);
 
     // Attach this to each Resource
-    const optionsWithAuth = {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.authorizerId,
-      },
-    };
+    // const optionsWithAuth = {
+    //   authorizationType: AuthorizationType.COGNITO,
+    //   authorizer: {
+    //     authorizerId: authorizer.authorizerId,
+    //   },
+    // };
 
     // Attach this to each HTTP Method endpoint, for each Resource, that requires authenticated access
     const optionsWithCors = {
@@ -49,23 +54,20 @@ class ApiStack extends Stack {
     // });
 
 
-    /*** Account Service */
+    /*** API Endpoints of Services */
 
-    new AccountApiEndpointsStack(this, "AccountEndpoints", {
-      restApi,
-      optionsWithCors,
-      accountStack,  // To access Lambda integration
-    });
-
-
-    /*** Some Service */
-
-    // new SomeServiceApiEndpointsStack(this, "SomeServiceEndpoints", {
+    // new AccountApiEndpointsStack(this, "AccountApiEndpointsStack", {
     //   restApi,
-    //   optionsWithAuth,   // Need to set this on each resource method (that requires authenticated access)
-    //   optionsWithCors,   // I don't think this may be necessary
-    //   someServiceStack,  // To access Lambda integration
+    //   optionsWithCors,
+    //   accountStack,  // To access Lambda integration
     // });
+
+    new DeviceMgmtApiEndpointsStack(this, "DeviceMgmtApiEndpointsStack", {
+      restApi,
+      optionsWithCors,   // Set this on each resource
+      // optionsWithAuth,   // Set this on each resource method (that requires authenticated access)
+      deviceMgmtStack,  // To access Lambda integration
+    });
 
 
 

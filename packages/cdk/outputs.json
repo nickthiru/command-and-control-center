@@ -1,16 +1,8 @@
 {
-  "CdkStackAuthStack65D3C934": {
-    "ExportsOutputRefConsumerUserPoolConsumerUserPoolClientC7FC8AB97240860E": "3017a5csm9grlgpak5j5lb05uq",
-    "ConsumerUserPoolId": "us-east-1_JxSxQmgh2",
-    "ExportsOutputFnGetAttConsumerUserPool8E205565ArnDB4DF030": "arn:aws:cognito-idp:us-east-1:346761569124:userpool/us-east-1_JxSxQmgh2",
-    "ConsumerUserPoolClientId": "3017a5csm9grlgpak5j5lb05uq"
-  },
-  "CdkStackAccountStack0608199A": {
-    "ExportsOutputFnGetAttConfirmSignUpLambda779FAC4CArnD02E2FBD": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackAccountStack06081-ConfirmSignUpLambda779FA-7DfkgkqqM0ru",
-    "ExportsOutputFnGetAttSignInLambdaFC07CD3AArnC8F590F1": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackAccountStack0608199A-SignInLambdaFC07CD3A-mrwf3a3J025w",
-    "ExportsOutputFnGetAttSignUpLambdaC55A4BFAArnBE0CDB77": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackAccountStack0608199A-SignUpLambdaC55A4BFA-qKs1o35JbUx7"
+  "CdkStackDeviceMgmtStackFD3D5575": {
+    "ExportsOutputFnGetAttCreateThingTypeLambdaCE1D6ECCArnE73FBF4C": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackDeviceMgmtStackFD-CreateThingTypeLambdaCE1-49jLebCBot37"
   },
   "CdkStackApiStackB9BC31F4": {
-    "RestApiEndpoint0551178A": "https://qle86j7zv5.execute-api.us-east-1.amazonaws.com/prod/"
+    "RestApiEndpoint0551178A": "https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod/"
   }
 }

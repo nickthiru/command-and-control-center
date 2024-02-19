@@ -4,8 +4,11 @@
 // const { handler } = require("./account/workflow/confirm-sign-up.js");
 // const event = require("../test/test-data/account/workflow/lambda-event/confirm-sign-up.json");
 
-const { handler } = require("./account/workflow/sign-in.js");
-const event = require("../test/test-data/account/workflow/lambda-event/sign-in.json");
+// const { handler } = require("./account/workflow/sign-in.js");
+// const event = require("../test/test-data/account/workflow/lambda-event/sign-in.json");
+
+const { handler } = require("./device-mgmt/workflow/create-thing-type.js");
+const event = require("../test/test-data/device-mgmt/workflow/lambda-event/create-thing-type.json");
 
 
 const main = async () => {
