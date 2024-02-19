@@ -1,10 +1,10 @@
-const { NestedStack } = require("aws-cdk-lib");
+const { Stack } = require("aws-cdk-lib");
 
 
-class AccountApiEndpointsStack extends NestedStack {
+class AccountApiEndpointsStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-    console.log("(+) Inside 'AccountEndpoints'");
+    console.log("(+) Inside 'AccountApiEndpointsStack'");
 
     const {
       restApi,

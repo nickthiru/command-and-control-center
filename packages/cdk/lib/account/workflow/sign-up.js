@@ -26,7 +26,7 @@ class SignUp extends Construct {
       runtime: Runtime.NODEJS_18_X,
       // memorySize: 1024,
       // memorySize: 512,
-      timeout: Duration.minutes(1),
+      // timeout: Duration.minutes(1),
       entry: (path.join(__dirname, "../../../src/account/workflow/sign-up.js")),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
