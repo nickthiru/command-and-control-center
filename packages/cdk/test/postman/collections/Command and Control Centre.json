@@ -1,20 +1,21 @@
 {
 	"info": {
-		"_postman_id": "8306af67-b8c5-432f-8ef6-e6bca0bf37e7",
-		"name": "App API",
+		"_postman_id": "603e1cba-814d-41a8-a9e2-febe7be783fe",
+		"name": "Command and Control Centre",
+		"description": "IoT Command and Control Centre App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_uid": "17148380-8306af67-b8c5-432f-8ef6-e6bca0bf37e7"
+		"_uid": "17148380-603e1cba-814d-41a8-a9e2-febe7be783fe"
 	},
 	"item": [
 		{
-			"name": "account",
+			"name": "device-mgmt",
 			"item": [
 				{
-					"name": "sign-up",
+					"name": "thing-type",
 					"item": [
 						{
-							"name": "Submit sign up form",
-							"id": "ea58562d-dfd8-48f4-bfe7-e7bc931e7836",
+							"name": "TBD",
+							"id": "7a782da2-11d0-434b-aceb-7248bf2b02b4",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -32,7 +33,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}",
+									"raw": "{\n  \"ThingTypeName\": \"ThingTypeTest\",\n  \"ThingTypeDescription\": \"ThingTypeDescriptionTest\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -41,21 +42,29 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/account/sign-up",
+									"raw": "{{baseUrl}}/device-mgmt/thing-type",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"account",
-										"sign-up"
+										"device-mgmt",
+										"thing-type"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"type": "text",
+											"disabled": true
+										}
 									]
 								},
-								"description": "Submit sign up form"
+								"description": "TBD"
 							},
 							"response": [
 								{
-									"id": "43cc79b8-feba-4ee7-bb4d-9274c3f59fb3",
-									"name": "Successfully signed up user",
+									"id": "3229fede-bb72-493f-95fc-86c34933ae99",
+									"name": "TBD",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
@@ -70,7 +79,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}",
+											"raw": "{\n  \"ThingTypeName\": \"<string>\",\n  \"ThingTypeDescription\": \"<string>\"\n}",
 											"options": {
 												"raw": {
 													"headerFamily": "json",
@@ -79,21 +88,19 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseUrl}}/account/sign-up",
+											"raw": "{{baseUrl}}/device-mgmt/thing-type",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
-												"account",
-												"sign-up"
+												"device-mgmt",
+												"thing-type"
 											]
-										},
-										"description": "Submit sign up form"
+										}
 									},
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"_postman_previewtype": "html",
 									"header": [
 										{
 											"key": "Content-Type",
@@ -101,22 +108,22 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}"
+									"body": "{\n  \"ThingTypeName\": \"<string>\",\n  \"ThingTypeArn\": \"<string>\",\n  \"ThingTypeId\": \"<string>\"\n}"
 								}
 							]
 						}
 					],
-					"id": "c6585ad5-1d99-440f-856d-9dc8cc53d38a"
+					"id": "d7777e79-709e-4b26-929a-35a1a4101f8c"
 				}
 			],
-			"id": "531d82b0-742d-4278-9601-fc2d6fdc4105"
+			"id": "efa15d7c-b8ee-422a-a779-0058bfc9ec17"
 		}
 	],
 	"variable": [
 		{
-			"id": "64767588-fdfc-4c32-ad1d-c3b1db28579e",
+			"id": "d316f6e4-e0dd-43ca-b061-b7a133c856ba",
 			"key": "baseUrl",
-			"value": "https://rri1nqkdad.execute-api.us-east-1.amazonaws.com/prod"
+			"value": "https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod/"
 		}
 	]
 }

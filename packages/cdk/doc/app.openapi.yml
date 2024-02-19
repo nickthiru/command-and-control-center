@@ -5,6 +5,10 @@ info:
   title: 'C3'
   description: IoT Command and Control Centre App
 
+servers:
+  - url: https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod/
+    description: Basepath
+
 paths:
 
   /device-mgmt/thing-type:
@@ -37,6 +41,10 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - ThingTypeName
+                  - ThingTypeArn
+                  - ThingTypeId
                 properties:
                   ThingTypeName:
                     description: TBD
