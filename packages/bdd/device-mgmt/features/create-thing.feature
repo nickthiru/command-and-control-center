@@ -9,46 +9,50 @@ Feature: Create thing
 
         When ?
 
-          # 1. AWS
+          # AWS
 
-            # 1.1. IoT
-            # @aws-sdk/client-iot
+            # IoT Policy
 
-              CreateThingCommand
+              # CfnPolicy
 
-              CreateKeysAndCertificateCommand
+            # Lambda
+            
+              # @aws-sdk/client-iot
 
-              # CreatePolicyCommand
+                # Create a thing
+
+                  # Use CreateThingCommand
+
+                  # Input:
+                    # - thingName (string)
+                  
+                  # Output:
+                    # - 
+
+                # CreateKeysAndCertificateCommand
+                
+                # AttachPolicyCommand
+                
+                # AttachThingPrincipalCommand
+
+                # Get Amazon Root CA 1 certificate. Probably not something you can fetch; need to save it in the Lambda handler (send it via Lambda cdk construct?)
               
-              AttachPolicyCommand
-              
-              AttachThingPrincipalCommand
 
-              Get Amazon Root CA 1 certificate. Probably not something you can fetch; need to save it in the Lambda handler (send it via Lambda cdk construct?),
-              
+            # API
 
-            # 1.2. API
-
-              # "POST device-mgmt/register/thing"
+              # "POST /device-mgmt/thing"
 
               # Add request validation
 
-              Return device cert, private key, Root CA cert
-
-            # 1.3. Lambda
-
-              # Use @aws-sdk/client-cognito-identity-provider
-
-              # Cognito APIs:
-              #   SignUpCommand
-              #   ConfirmSignUpCommand
+              # Return device cert, private key, Root CA cert
 
 
-          # 2. Web
+          # Web
 
-            # Account sign up page/form
+            # Register thing form
 
-            # Create unique hash for username (and let users sign in with email)
+
+
 
 
         Then ?

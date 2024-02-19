@@ -1,5 +1,6 @@
 const { Stack } = require("aws-cdk-lib");
 const { CreateThingType } = require("./workflow/create-thing-type");
+const { CreateThing } = require("./workflow/create-thing");
 
 
 class DeviceMgmtStack extends Stack {
@@ -7,9 +8,9 @@ class DeviceMgmtStack extends Stack {
     super(scope, id, props);
     console.log("(+) Inside 'DeviceMgmtStack'");
 
-    // const {
-    //   consumerUserPoolClientId
-    // } = props;
+    const {
+      policyStack,
+    } = props;
 
 
     /*** Backend Workflows ***/
@@ -20,6 +21,11 @@ class DeviceMgmtStack extends Stack {
     /*** Frontend Workflows ***/
 
     this.createThingType = new CreateThingType(this, "CreateThingType");
+
+    this.createThing = new CreateThing(this, "CreateThing", {
+      iotAllAccessPolicyName: policyStack.iot.allAccess.policyName,
+    });
+
   }
 }
 

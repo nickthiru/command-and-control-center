@@ -9,30 +9,40 @@ Feature: Create Thing Group
 
         When ?
 
-          # 1. AWS
+          # AWS
 
-            # 1.1. IoT
-            # @aws-sdk/client-iot
+            # IoT
+            
+              # @aws-sdk/client-iot
+
+              # CreateThingGroupCommand
+
+              # Input:
+              #   - thingGroupName
+              #   - thingGroupDescription
+              
+              # Output:
+              #   - thingGroupName
+              #   - thingGroupArn
+              #   - thingGroupId
 
              
-              
-
-            # 1.2. API
+            # API
 
               # "POST /device-mgmt/thing-group"
 
               # Add request validation
 
-              Return device cert, private key, Root CA cert
+              # Return ?
 
 
-            # 1.3. Lambda
+            # Lambda
 
 
 
-          # 2. Web
+          # Web
 
-            # Create Thing Type form
+            # Create Thing Group form
 
 
 

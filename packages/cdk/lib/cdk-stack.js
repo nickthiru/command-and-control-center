@@ -3,6 +3,7 @@ const { Stack } = require('aws-cdk-lib');
 // const { AccountStack } = require('./account/main-stack');
 const { ApiStack } = require('./api/main-stack');
 const { DeviceMgmtStack } = require('./device-mgmt/main-stack');
+const { PolicyStack } = require('./policy/main-stack');
 
 class CdkStack extends Stack {
   /**
@@ -23,7 +24,11 @@ class CdkStack extends Stack {
     //   consumerUserPoolClientId,
     // });
 
-    const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack");
+    const policyStack = new PolicyStack(this, "PolicyStack");
+
+    const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack", {
+      policyStack,
+    });
 
 
     new ApiStack(this, "ApiStack", {
