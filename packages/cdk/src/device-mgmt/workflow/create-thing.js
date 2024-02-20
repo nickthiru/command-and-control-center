@@ -6,7 +6,7 @@ const {
   AttachThingPrincipalCommand
 } = require("@aws-sdk/client-iot");
 
-const DeviceMgmt = require("../service.js");
+// const DeviceMgmt = require("../service.js");
 const Api = require("../../api/service.js");
 
 // For local dev
@@ -19,7 +19,6 @@ exports.handler = async (event) => {
   console.log("Inside 'create-thing-type' handler");
   console.log("event: \n" + JSON.stringify(event, null, 2));
 
-
   const [
     iotAllAccessPolicyName,
   ] = getProcessData(process);
@@ -29,17 +28,63 @@ exports.handler = async (event) => {
     thingDescription,
   ] = getEventData(event);
 
-  const createThingResponse = await DeviceMgmt.createThing(
-    iotClient,
-    CreateThingCommand,
-    thingName,
-    thingDescription
-  );
 
-  const httpResponse = prepareHttpResponse(createThingResponse);
+  try {
+
+    var {
+      thingArn,
+      thingId,
+    } = await iotClient.send(new CreateThingCommand({
+      thingName,
+      // thingTypeName: "",
+      attributePayload: {
+        attributes: {
+          thingDescription,
+        },
+        // merge: true,
+      },
+    }));
+    console.log("thingArn: " + thingArn);
+    console.log("thingId: " + thingId);
+
+    var {
+      certificateArn,
+      certificateId,
+      certificatePem,
+      keyPair,
+    } = await iotClient.send(new CreateKeysAndCertificateCommand({
+      setAsActive: true,
+    }));
+    console.log("certificateArn: " + certificateArn);
+    console.log("certificateId: " + certificateId);
+    console.log("certificatePem: " + certificatePem);
+    console.log("keyPair: " + JSON.stringify(keyPair, null, 2));
+
+    await iotClient.send(new AttachPolicyCommand({
+      policyName: iotAllAccessPolicyName,
+      target: certificateArn,
+    }));
+
+    await iotClient.send(new AttachThingPrincipalCommand({
+      thingName: thingName,
+      principal: certificateArn,
+    }));
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  const httpResponse = prepareHttpResponse(
+    thingName,
+    thingDescription,
+    thingArn,
+    thingId,
+  );
 
   return httpResponse;
 }
+
+
 
 function getProcessData(process) {
   console.log("Inside 'getProcessData()'");
@@ -51,6 +96,7 @@ function getProcessData(process) {
     iotAllAccessPolicyName,
   ]
 }
+
 
 function getEventData(event) {
   console.log("Inside 'getEventData()'");
@@ -68,14 +114,14 @@ function getEventData(event) {
   ];
 }
 
-function prepareHttpResponse(createThingResponse) {
-  console.log("Inside 'prepareResponse()'");
 
-  const {
-    thingTypeName,
-    thingTypeArn,
-    thingTypeId,
-  } = createThingResponse;
+function prepareHttpResponse(
+  thingName,
+  thingDescription,
+  thingArn,
+  thingId
+) {
+  console.log("Inside 'prepareResponse()'");
 
   const corsHeader = Api.addCorsHeader();
   console.log("(+) corsHeadear: " + JSON.stringify(corsHeader));
@@ -86,9 +132,10 @@ function prepareHttpResponse(createThingResponse) {
   console.log("(+) headers: " + JSON.stringify(headers));
 
   const body = JSON.stringify({
-    ThingTypeName: thingTypeName,
-    ThingTypeArn: thingTypeArn,
-    ThingTypeId: thingTypeId,
+    ThingName: thingName,
+    ThingDescription: thingDescription,
+    ThingArn: thingArn,
+    ThingId: thingId,
   });
   console.log("(+) body: " + JSON.stringify(body));
 

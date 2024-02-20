@@ -1,6 +1,6 @@
 const { CognitoIdentityProviderClient, InitiateAuthCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
-const Account = require("../service.js");
+// const Account = require("../service.js");
 const Api = require("../../api/service.js");
 
 // For local dev
@@ -25,20 +25,66 @@ exports.handler = async (event) => {
     password,
   ] = getEventData(event);
 
-  const signInResult = await Account.signIn(
-    cognitoClient,
-    InitiateAuthCommand,
-    consumerUserPoolClientId,
-    authFlow,
-    emailAddress,
-    username,
-    password,
-  );
+  // const signInResult = await Account.signIn(
+  //   cognitoClient,
+  //   InitiateAuthCommand,
+  //   consumerUserPoolClientId,
+  //   authFlow,
+  //   emailAddress,
+  //   username,
+  //   password,
+  // );
+
+  try {
+
+    const initiateAuthResponse = await cognitoClient.send(new InitiateAuthCommand({
+      ClientId: consumerUserPoolClientId,
+      AuthFlow: authFlow,
+      AuthParameters: {
+        // EMAIL: emailAddress,
+        USERNAME: username,
+        PASSWORD: password,
+      },
+    }));
+
+    // { // InitiateAuthResponse
+    //   ChallengeName: "SMS_MFA" || "SOFTWARE_TOKEN_MFA" || "SELECT_MFA_TYPE" || "MFA_SETUP" || "PASSWORD_VERIFIER" || "CUSTOM_CHALLENGE" || "DEVICE_SRP_AUTH" || "DEVICE_PASSWORD_VERIFIER" || "ADMIN_NO_SRP_AUTH" || "NEW_PASSWORD_REQUIRED",
+    //   Session: "STRING_VALUE",
+    //   ChallengeParameters: { // ChallengeParametersType
+    //     "<keys>": "STRING_VALUE",
+    //   },
+    //   AuthenticationResult: { // AuthenticationResultType
+    //     AccessToken: "STRING_VALUE",
+    //     ExpiresIn: Number("int"),
+    //     TokenType: "STRING_VALUE",
+    //     RefreshToken: "STRING_VALUE",
+    //     IdToken: "STRING_VALUE",
+    //     NewDeviceMetadata: { // NewDeviceMetadataType
+    //       DeviceKey: "STRING_VALUE",
+    //       DeviceGroupKey: "STRING_VALUE",
+    //     },
+    //   },
+    // };
+    console.log("(+) initiateAuthResponse: " + JSON.stringify(initiateAuthResponse, null, 2));
+
+    var accessToken = initiateAuthResponse.AuthenticationResult.AccessToken;
+    var expiresIn = initiateAuthResponse.AuthenticationResult.ExpiresIn
+
+    // return {
+    //   accessToken,
+    //   expiresIn,
+    // };
+
+  } catch (error) {
+    console.log(error);
+  }
 
   const response = prepareResponse(signInResult);
 
   return response;
 }
+
+
 
 function getProcessData(process) {
   console.log("Inside 'getProcessData()'");
@@ -54,6 +100,7 @@ function getProcessData(process) {
     authFlow,
   ]
 }
+
 
 function getEventData(event) {
   console.log("Inside 'getEventData()'");
@@ -76,6 +123,7 @@ function getEventData(event) {
     password,
   ];
 }
+
 
 function prepareResponse(signInResult) {
   console.log("Inside 'prepareResponse()'");

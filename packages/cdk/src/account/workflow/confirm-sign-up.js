@@ -1,6 +1,6 @@
 const { CognitoIdentityProviderClient, ConfirmSignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
-const Account = require("../service.js");
+// const Account = require("../service.js");
 const Api = require("../../api/service.js");
 
 // For local dev
@@ -20,18 +20,36 @@ exports.handler = async (event) => {
     confirmationCode,
   ] = getEventData(event);
 
-  const confirmSignUpResult = await Account.confirmSignUp(
-    cognitoClient,
-    ConfirmSignUpCommand,
-    consumerUserPoolClientId,
-    username,
-    confirmationCode,
-  );
+  // const confirmSignUpResult = await Account.confirmSignUp(
+  //   cognitoClient,
+  //   ConfirmSignUpCommand,
+  //   consumerUserPoolClientId,
+  //   username,
+  //   confirmationCode,
+  // );
+
+  try {
+
+    const confirmSignUpResponse = await cognitoClient.send(new ConfirmSignUpCommand({
+      ClientId: consumerUserPoolClientId,
+      Username: username,
+      ConfirmationCode: confirmationCode,
+    }));
+
+    console.log("(+) confirmSignUpResponse: " + JSON.stringify(confirmSignUpResponse, null, 2));
+
+    return confirmSignUpResponse;
+
+  } catch (error) {
+    console.log(error);
+  }
 
   const response = prepareResponse();
 
   return response;
 }
+
+
 
 function getProcessData(process) {
   console.log("Inside 'getProcessData()'");
@@ -43,6 +61,7 @@ function getProcessData(process) {
     consumerUserPoolClientId,
   ]
 }
+
 
 function getEventData(event) {
   console.log("Inside 'getEventData()'");
@@ -61,6 +80,7 @@ function getEventData(event) {
     confirmationCode,
   ];
 }
+
 
 function prepareResponse() {
   console.log("Inside 'prepareResponse()'");

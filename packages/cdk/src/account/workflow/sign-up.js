@@ -1,6 +1,6 @@
 const { CognitoIdentityProviderClient, SignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
-const Account = require("../service.js");
+// const Account = require("../service.js");
 const Api = require("../../api/service.js");
 
 // For local dev
@@ -22,20 +22,53 @@ exports.handler = async (event) => {
     emailAddress,
   ] = getEventData(event);
 
-  const signUpResult = await Account.signUp(
-    cognitoClient,
-    SignUpCommand,
-    consumerUserPoolClientId,
-    username,
-    password,
-    emailAddress,
-  );
+  // const signUpResult = await Account.signUp(
+  //   cognitoClient,
+  //   SignUpCommand,
+  //   consumerUserPoolClientId,
+  //   username,
+  //   password,
+  //   emailAddress,
+  // );
+
+  try {
+
+    const signUpResponse = await cognitoClient.send(new SignUpCommand({
+      ClientId: consumerUserPoolClientId,
+      Username: username,
+      Password: password,
+      UserAttributes: [
+        {
+          Name: "email",
+          Value: emailAddress,
+        },
+      ],
+    }));
+
+    // const signUpResponse = { // SignUpResponse
+    //   UserConfirmed: true, // required
+    //   CodeDeliveryDetails: { // CodeDeliveryDetailsType
+    //     Destination: "STRING_VALUE",
+    //     DeliveryMedium: "EMAIL",
+    //     AttributeName: "STRING_VALUE",
+    //   },
+    //   UserSub: "STRING_VALUE", // required
+    // };
+    console.log("(+) signUpResponse: " + JSON.stringify(signUpResponse, null, 2));
+
+    return signUpResponse;
+
+  } catch (error) {
+    console.log(error);
+  }
 
   // const response = prepareResponse(signUpResult);
   const response = prepareResponse();
 
   return response;
 }
+
+
 
 function getProcessData(process) {
   console.log("Inside 'getProcessData()'");
@@ -47,6 +80,7 @@ function getProcessData(process) {
     consumerUserPoolClientId,
   ]
 }
+
 
 function getEventData(event) {
   console.log("Inside 'getEventData()'");
@@ -69,6 +103,7 @@ function getEventData(event) {
     emailAddress,
   ];
 }
+
 
 function prepareResponse() {
   console.log("Inside 'prepareResponse()'");

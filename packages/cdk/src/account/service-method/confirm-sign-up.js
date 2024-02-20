@@ -1,13 +1,13 @@
 module.exports = async function confirmSignUp(
   cognitoClient,
-  SignUpCommand,
+  ConfirmSignUpCommand,
   consumerUserPoolClientId,
   username,
   confirmationCode,
 ) {
 
   try {
-    const confirmSignUpResponse = await cognitoClient.send(new SignUpCommand({
+    const confirmSignUpResponse = await cognitoClient.send(new ConfirmSignUpCommand({
       ClientId: consumerUserPoolClientId,
       Username: username,
       ConfirmationCode: confirmationCode,
