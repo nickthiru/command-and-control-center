@@ -4,7 +4,7 @@ import { parse } from "csv-parse";
 import axios from "axios";
 // import path from "path";
 
-const fsStream = fs.createReadStream("../../sample-data/accelerometer-data-5.csv");
+const fsStream = fs.createReadStream("./data/accelerometer-data-5.csv");
 
 const intervalId = setInterval(() => {
   fsStream
@@ -24,7 +24,7 @@ const intervalId = setInterval(() => {
 
       // Send POST request using "axios" package
       axios
-        .post("http://127.0.0.1:1880/mpu6050/data/v1/xl", requestData)
+        .post("http://127.0.0.1:1880/node-red", requestData)
         .then((res) => console.log("(+) axios res:\n", res))
         .catch((err) => console.log("(-) axios err:\n", err));
 
@@ -34,6 +34,7 @@ const intervalId = setInterval(() => {
       console.log("(+) End of file")
       clearInterval(intervalId);
       // process.exit();
+      return;
     })
     .on("error", (err) => console.log("(-) fsStream err " + err.message));
 }, 1000);
