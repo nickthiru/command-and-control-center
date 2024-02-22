@@ -15,6 +15,7 @@ Feature: Create thing
 
               # CfnPolicy
 
+
             # Lambda
             
               # @aws-sdk/client-iot
@@ -50,6 +51,8 @@ Feature: Create thing
           # Web
 
             # Register thing form
+
+            # If Thing successfully created, save it to indexedDb
 
 
 

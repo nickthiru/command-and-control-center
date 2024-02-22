@@ -1,10 +1,10 @@
 @ImpactStoryMapId:1.1.
-Feature: View map marker showing device location
+Feature: List all devices in account
 
     Rule: 
 
       @Api @Web?
-      Scenario: Successfully create a map marker showing device location
+      Scenario: Successfully list all devices
         Given ?
 
         When ?
@@ -15,21 +15,21 @@ Feature: View map marker showing device location
             
               # @aws-sdk/client-iot
 
-              # CreateThingGroupCommand
+              # ListThingsCommand ?
 
               # Input:
-              #   - thingGroupName
-              #   - thingGroupDescription
+              #   - 
+              #   - 
               
               # Output:
-              #   - thingGroupName
-              #   - thingGroupArn
-              #   - thingGroupId
+              #   - 
+              #   - 
+              #   - 
 
              
             # API
 
-              # "POST /device-mgmt/thing-group"
+              # "GET /device-mgmt/things"
 
               # Add request validation
 
@@ -42,9 +42,9 @@ Feature: View map marker showing device location
 
           # Web
 
-            # Save device details in indexedDb
+            # Get device details in indexedDb. If there is no data, fetch it from Device Registry (ListThingsCommand) and save to indexedDb, then display it.
 
-              #
+          
 
 
 
