@@ -33,8 +33,7 @@ const intervalId = setInterval(() => {
     .on("end", () => {
       console.log("(+) End of file")
       clearInterval(intervalId);
-      // process.exit();
-      return;
+      process.exit();
     })
     .on("error", (err) => console.log("(-) fsStream err " + err.message));
 }, 1000);
