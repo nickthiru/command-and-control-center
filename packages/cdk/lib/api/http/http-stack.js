@@ -1,16 +1,16 @@
 const { Stack, CfnOutput } = require("aws-cdk-lib");
 const { RestApi, Deployment, Stage, Cors, CognitoUserPoolsAuthorizer, AuthorizationType } = require("aws-cdk-lib/aws-apigateway");
-const { AccountApiEndpointsStack } = require("./endpoints-stack/account");
-const { DeviceMgmtApiEndpointsStack } = require("./endpoints-stack/device-mgmt");
+// const { AccountMgmtApiEndpointsStack } = require("./endpoints/account-mgmt-endpoints-stack");
+const { DeviceMgmtApiEndpointsStack } = require("./service-endpoints/device-mgmt-endpoints-stack");
 
-class ApiStack extends Stack {
+class HttpStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
     console.log("(+) Inside 'ApiStack'");
 
     const {
       // authStack,
-      // accountStack,
+      // accountMgmtStack,
       deviceMgmtStack,
     } = props;
 
@@ -56,10 +56,10 @@ class ApiStack extends Stack {
 
     /*** API Endpoints of Services */
 
-    // new AccountApiEndpointsStack(this, "AccountApiEndpointsStack", {
+    // new AccountMgmtApiEndpointsStack(this, "AccountMgmtApiEndpointsStack", {
     //   restApi,
     //   optionsWithCors,
-    //   accountStack,  // To access Lambda integration
+    //   accountMgmtStack,  // To access Lambda integration
     // });
 
     new DeviceMgmtApiEndpointsStack(this, "DeviceMgmtApiEndpointsStack", {
@@ -81,4 +81,4 @@ class ApiStack extends Stack {
   }
 }
 
-module.exports = { ApiStack };
+module.exports = { HttpStack };

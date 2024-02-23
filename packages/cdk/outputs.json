@@ -1,8 +1,5 @@
 {
-  "CdkStackDeviceMgmtStackFD3D5575": {
-    "ExportsOutputFnGetAttCreateThingTypeLambdaCE1D6ECCArnE73FBF4C": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackDeviceMgmtStackFD-CreateThingTypeLambdaCE1-49jLebCBot37"
-  },
-  "CdkStackApiStackB9BC31F4": {
-    "RestApiEndpoint0551178A": "https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod/"
+  "CdkStackApiStackWebSocketStackCA37355C": {
+    "DevStageWebSocketApiEndpoint": "wss://7kazzznh87.execute-api.us-east-1.amazonaws.com/dev"
   }
 }

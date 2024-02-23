@@ -10,13 +10,10 @@ const path = require("path");
 const packageLockJsonFile = "../../../../../package-lock.json";
 
 
-class CreateThing extends Construct {
+class CreateThingTypeWorkflow extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-    console.log("(+) Inside 'CreateThing' construct");
-
-    const { iotAllAccessPolicyName } = props;
-    // console.log("(+) consumerUserPoolClientId: " + consumerUserPoolClientId);
+    console.log("(+) Inside 'CreateThingType' construct");
 
 
     const lambda = new NodejsFunction(this, "Lambda", {
@@ -27,22 +24,19 @@ class CreateThing extends Construct {
       // memorySize: 1024,
       // memorySize: 512,
       // timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../../../src/device-mgmt/workflow/create-thing.js")),
+      entry: (path.join(__dirname, "../../../src/device-mgmt/workflow/create-thing-type.js")),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
-      environment: {
-        IOT_ALL_ACCESS_POLICY_NAME: iotAllAccessPolicyName,
-      }
     });
 
     lambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
-      resources: ["arn:aws:iot:us-east-1:346761569124:thing/*"],
-      actions: ["iot:CreateThing"],
+      resources: ["arn:aws:iot:us-east-1:346761569124:thingtype/*"],
+      actions: ["iot:CreateThingType"],
     }));
 
     this.lambdaIntegration = new LambdaIntegration(lambda);
   }
 }
 
-module.exports = { CreateThing };
+module.exports = { CreateThingTypeWorkflow };

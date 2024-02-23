@@ -7,7 +7,7 @@ const {
 } = require("@aws-sdk/client-iot");
 
 // const DeviceMgmt = require("../service.js");
-const Api = require("../../api/service.js");
+const Api = require("../../api/http/service.js");
 
 // For local dev
 // require('dotenv').config();

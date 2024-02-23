@@ -8,7 +8,7 @@ class DeviceMgmtApiEndpointsStack extends Stack {
 
     const {
       restApi,
-      optionsWithAuth,
+      // optionsWithAuth,
       optionsWithCors,
       deviceMgmtStack,
     } = props;

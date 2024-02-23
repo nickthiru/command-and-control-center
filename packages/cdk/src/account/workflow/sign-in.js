@@ -1,7 +1,7 @@
 const { CognitoIdentityProviderClient, InitiateAuthCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
 // const Account = require("../service.js");
-const Api = require("../../api/service.js");
+const Api = require("../../api/http/service.js");
 
 // For local dev
 // require('dotenv').config();

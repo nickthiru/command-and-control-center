@@ -1,5 +1,5 @@
 const { Stack } = require("aws-cdk-lib");
-const { SignUp } = require("./workflow/sign-up.js");
+const { SignUp } = require("./workflow/sign-up-construct.js");
 const { ConfirmSignUp } = require("./workflow/confirm-sign-up.js");
 const { SignIn } = require("./workflow/sign-in.js");
 
