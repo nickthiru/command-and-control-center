@@ -1,5 +1,5 @@
 const { Stack } = require("aws-cdk-lib");
-// const { HttpStack } = require("./http/http-stack");
+const { HttpStack } = require("./http/http-stack");
 const { WebSocketStack } = require("./websocket/websocket-stack");
 
 class ApiStack extends Stack {
@@ -8,21 +8,18 @@ class ApiStack extends Stack {
     console.log("(+) Inside 'ApiStack'");
 
     const {
-      // dataStack,
+      dataStack,
       // authStack,
-      // accountStack,
-      deviceMgmtStack,
     } = props;
 
 
-    // new HttpStack(this, "HttpStack", {
-    //   // authStack,
-    //   // accountMgmtStack,
-    //   deviceMgmtStack,
-    // });
+    this.httpStack = new HttpStack(this, "HttpStack", {
+      // authStack,
+    });
 
-    new WebSocketStack(this, "WebSocketStack", {
-      // dataStack,
+    this.websocketStack = new WebSocketStack(this, "WebSocketStack", {
+      dataStack,
+      // authStack,
     })
 
 

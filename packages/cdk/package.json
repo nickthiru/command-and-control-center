@@ -10,7 +10,10 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@aws-cdk/aws-iot-actions-alpha": "^2.130.0-alpha.0",
+    "@aws-cdk/aws-iot-alpha": "^2.130.0-alpha.0",
     "@aws-sdk/client-iot": "^3.515.0",
+    "@aws-solutions-constructs/aws-lambda-sqs": "^2.53.0",
     "@aws-solutions-constructs/aws-sns-sqs": "^2.53.0",
     "@aws-solutions-constructs/aws-sqs-lambda": "^2.53.0",
     "aws-cdk": "^2.130.0",
@@ -22,6 +25,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.490.0",
     "@aws-sdk/client-dynamodb": "^3.518.0",
     "@aws-sdk/client-sns": "^3.516.0",
+    "@aws-sdk/client-sqs": "^3.521.0",
     "@aws-sdk/util-dynamodb": "^3.518.0",
     "@aws-solutions-constructs/aws-lambda-s3": "^2.53.0",
     "@wheatstalk/cdk-sns-log-group-subscription": "^0.0.12",

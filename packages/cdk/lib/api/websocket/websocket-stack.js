@@ -4,15 +4,15 @@ const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const { WebSocketApi, WebSocketStage } = require("aws-cdk-lib/aws-apigatewayv2");
 const { WebSocketLambdaIntegration } = require("aws-cdk-lib/aws-apigatewayv2-integrations");
-// const { WebSocketLambdaAuthorizer } = require("aws-cdk-lib/aws-apigatewayv2-authorizers");
+const { WebSocketLambdaAuthorizer } = require("aws-cdk-lib/aws-apigatewayv2-authorizers");
 const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
 const { Queue } = require("aws-cdk-lib/aws-sqs");
 const { SqsToLambda } = require("@aws-solutions-constructs/aws-sqs-lambda");
 const path = require("path");
 
 
-const webSocketRouteFunctionsLocation = "../../../src/api/websocket/route";
-// const webSocketLambdaAuthorizerHandler = "../../../src/api/websocket/lambda-authorizer.js";
+const webSocketRouteFunctionsPath = "../../../src/api/websocket/route";
+const webSocketLambdaAuthorizerPath = "../../../src/api/websocket/lambda-authorizer.js";
 const packageLockJsonFile = "../../../../../package-lock.json";
 
 
@@ -20,72 +20,56 @@ class WebSocketStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // const {
-    //   userPoolId,
-    //   userPoolClientId,
-    //   webSocketConnectionsTable
-    // } = props;
-
-    // const webSocketConnectionsTableName = webSocketConnectionsTable.tableName;
-
-    // DDB table to store WebSocket connections. This table needs to be set/accessed
-    // in the 'ConnectRoute_WebsocketLambda' (line 20).
-    const webSocketConnectionsTable = new Table(this, "WebSocketConnectionsTable", {
-      tableName: "WebSocketConnectionsTable",
-      partitionKey: {
-        name: "connectionId",
-        type: AttributeType.STRING
-      },
-      removalPolicy: RemovalPolicy.DESTROY,
-      billingMode: BillingMode.PAY_PER_REQUEST
-    });
-
-    const webSocketConnectionsTableName = webSocketConnectionsTable.tableName;
+    const {
+      // authStack,
+      dataStack,
+    } = props;
 
 
     /*** Built-In Route Handling Lambdas ***/
 
     const webSocketConnectRouteLambda = new NodejsFunction(this, "WebSocketConnectRouteLambda", {
       runtime: Runtime.NODEJS_18_X,
-      entry: (path.join(__dirname, `${webSocketRouteFunctionsLocation}/connect.js`)),
+      entry: (path.join(__dirname, `${webSocketRouteFunctionsPath}/connect.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        webSocketConnectionsTableName
+        APP_TABLE_NAME: dataStack.appTable.tableName,
       }
     });
 
     const webSocketDisconnectRouteLambda = new NodejsFunction(this, "WebSocketDisconnectRouteLambda", {
       runtime: Runtime.NODEJS_18_X,
-      entry: (path.join(__dirname, `${webSocketRouteFunctionsLocation}/disconnect.js`)),
+      entry: (path.join(__dirname, `${webSocketRouteFunctionsPath}/disconnect.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        webSocketConnectionsTableName
+        APP_TABLE_NAME: dataStack.appTable.tableName,
       }
     });
 
     const webSocketDefaultRouteLambda = new NodejsFunction(this, "WebSocketDefaultRouteLambda", {
       runtime: Runtime.NODEJS_18_X,
-      entry: (path.join(__dirname, `${webSocketRouteFunctionsLocation}/default.js`)),
+      entry: (path.join(__dirname, `${webSocketRouteFunctionsPath}/default.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        webSocketConnectionsTableName
+        APP_TABLE_NAME: dataStack.appTable.tableName,
       }
     });
 
     // Authorizer for 'connect' route
     // const webSocketLambdaAuthorizer = new NodejsFunction(this, "WebSocketLambdaAuthorizer", {
     //   runtime: Runtime.NODEJS_18_X,
-    //   entry: (path.join(__dirname, webSocketLambdaAuthorizerHandler)),
+    //   entry: (path.join(__dirname, webSocketLambdaAuthorizerPath)),
     //   handler: "handler",
     //   depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
     //   environment: {
-    //     userPoolId,
-    //     userPoolClientId,
+    //     USER_POOL_ID: authStack.userPool.userPoolId,
+    //     USER_POOL_CLIENT_ID: authStack.userPoolClient.userPoolClientId,
     //   }
     // });
+
 
 
     /*** WebSocket API ***/
@@ -127,6 +111,7 @@ class WebSocketStack extends Stack {
     });
 
 
+
     /*** WebSocket Stages ***/
 
     const devWebSocketStage = new WebSocketStage(this, "DevWebSocketStage", {
@@ -136,11 +121,12 @@ class WebSocketStack extends Stack {
     });
 
 
+
     /*** Custom Route Handling Lambdas ***/
 
     // const webSocketFromWebClientRouteLambda = new NodejsFunction(this, "WebSocketFromWebClientRouteLambda", {
     //   runtime: Runtime.NODEJS_18_X,
-    //   entry: (path.join(__dirname, `${webSocketRouteFunctionsLocation}/from-web-client.js`)),
+    //   entry: (path.join(__dirname, `${webSocketRouteFunctionsPath}/from-web-client.js`)),
     //   handler: "handler",
     //   depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
     //   initialPolicy: [
@@ -161,7 +147,7 @@ class WebSocketStack extends Stack {
 
     const webSocketToWebClientRouteLambda = new NodejsFunction(this, "WebSocketToWebClientRouteLambda", {
       runtime: Runtime.NODEJS_18_X,
-      entry: (path.join(__dirname, `${webSocketRouteFunctionsLocation}/to-web-client.js`)),
+      entry: (path.join(__dirname, `${webSocketRouteFunctionsPath}/to-web-client.js`)),
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       initialPolicy: [
@@ -173,10 +159,11 @@ class WebSocketStack extends Stack {
         }),
       ],
       environment: {
-        webSocketConnectionsTableName,
-        webSocketApiConnectionUrl: `https://${webSocketApi.apiId}.execute-api.us-east-1.amazonaws.com/${devWebSocketStage.stageName}`
+        APP_TABLE_NAME: dataStack.appTable.tableName,
+        WEBSOCKET_API_CONNECTION_URL: `https://${webSocketApi.apiId}.execute-api.us-east-1.amazonaws.com/${devWebSocketStage.stageName}`
       }
     });
+
 
 
     /*** Custom Route Integrations ***/
@@ -196,6 +183,7 @@ class WebSocketStack extends Stack {
     });
 
 
+
     /*** Integrations ***/
 
     this.webSocketToWebClientRouteQueue = new Queue(this, "WebSocketToWebClientRouteQueue", {
@@ -207,11 +195,13 @@ class WebSocketStack extends Stack {
     });
 
 
+
     /*** Permissions ***/
 
-    webSocketConnectionsTable.grantReadWriteData(webSocketConnectRouteLambda);
-    webSocketConnectionsTable.grantReadWriteData(webSocketDisconnectRouteLambda);
-    webSocketConnectionsTable.grantReadWriteData(webSocketToWebClientRouteLambda);
+    dataStack.appTable.grantReadWriteData(webSocketConnectRouteLambda);
+    dataStack.appTable.grantReadWriteData(webSocketDisconnectRouteLambda);
+    dataStack.appTable.grantReadWriteData(webSocketToWebClientRouteLambda);
+
 
 
     /*** Outputs ***/

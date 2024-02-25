@@ -4,7 +4,8 @@ const { Stack } = require('aws-cdk-lib');
 const { ApiStack } = require('./api/api-stack');
 const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
 const { PolicyStack } = require('./policy/policy-stack');
-// const { DataStack } = require('./data/data-stack');
+const { DataStack } = require('./data/data-stack');
+const { MapStack } = require('./map/map-stack');
 
 class CdkStack extends Stack {
   /**
@@ -16,29 +17,36 @@ class CdkStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
 
-    // const dataStack = new DataStack(this, "DataStack");
+
+    /*** Utilities ***/
+
+    const dataStack = new DataStack(this, "DataStack");
 
     // const authStack = new AuthStack(this, "AuthStack")
-    // const consumerUserPoolId = authStack.consumerUserPool.userPoolId;
-    // const consumerUserPoolClientId = authStack.consumerUserPoolClient.userPoolClientId;
-
-    // const accountMgmtStack = new AccountMgmtStack(this, "AccountMgmtStack", {
-    //   consumerUserPoolClientId,
-    // });
 
     const policyStack = new PolicyStack(this, "PolicyStack");
 
+    const apiStack = new ApiStack(this, "ApiStack", {
+      dataStack,
+      // authStack,
+    });
+
+
+    /*** Business Domains ***/
+
+    // const accountMgmtStack = new AccountMgmtStack(this, "AccountMgmtStack", {
+    //   apiStack,
+    //   authStack,
+    // });
+
     const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack", {
+      apiStack,
       policyStack,
     });
 
-    new ApiStack(this, "ApiStack", {
-      // dataStack,
-      // authStack,
-      // accountMgmtStack,
-      deviceMgmtStack,
-    });
-
+    new MapStack(this, "MapStack", {
+      apiStack,
+    })
   }
 }
 

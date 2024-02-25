@@ -7,15 +7,15 @@ const { LambdaIntegration } = require("aws-cdk-lib/aws-apigateway");
 const path = require("path");
 
 
-const packageLockJsonFile = "../../../../../package-lock.json";
-
-
-class CreateThingWorkflow extends Construct {
+class CreateThingWorkflowConstruct extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
     console.log("(+) Inside 'CreateThing' construct");
 
-    const { iotAllAccessPolicyName } = props;
+    const {
+      apiStack,
+      policyStack,
+    } = props;
 
 
     const lambda = new NodejsFunction(this, "Lambda", {
@@ -26,11 +26,11 @@ class CreateThingWorkflow extends Construct {
       // memorySize: 1024,
       // memorySize: 512,
       // timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../../../src/device-mgmt/workflow/create-thing.js")),
+      entry: (path.join(__dirname, "../../../../src/device-mgmt/thing/workflow/create-thing-workflow-service.js")),
       handler: "handler",
-      depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
+      depsLockFilePath: (path.join(__dirname, "../../../../../../package-lock.json")),
       environment: {
-        IOT_ALL_ACCESS_POLICY_NAME: iotAllAccessPolicyName,
+        IOT_ALL_ACCESS_POLICY_NAME: policyStack.iot.allAccess.policyName,
       }
     });
 
@@ -40,8 +40,22 @@ class CreateThingWorkflow extends Construct {
       actions: ["iot:CreateThing"],
     }));
 
-    this.lambdaIntegration = new LambdaIntegration(lambda);
+    // POST /device-mgmt/thing
+    apiStack.httpStack.restApi.root
+      .getResource("device-mgmt")
+      .getResource("thing")
+      .addMethod("POST", new LambdaIntegration(lambda));
+
+    // const resource = apiStack.httpStack.restApi.root.getResource("device-mgmt").getResource("thing");
+
+    // resource.addMethod("POST", new LambdaIntegration(lambda));
+
+    // resource.addMethod(
+    //   "POST",
+    //   new LambdaIntegration(lambda),
+    //   apiStack.httpStack.optionsWithAuth
+    // );
   }
 }
 
-module.exports = { CreateThingWorkflow };
+module.exports = { CreateThingWorkflowConstruct };

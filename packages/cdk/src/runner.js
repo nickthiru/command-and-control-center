@@ -7,8 +7,14 @@
 // const { handler } = require("./account/workflow/sign-in.js");
 // const event = require("../test/test-data/account/workflow/lambda-event/sign-in.json");
 
-const { handler } = require("./device-mgmt/workflow/create-thing-type.js");
-const event = require("../test/test-data/device-mgmt/workflow/lambda-event/create-thing-type.json");
+// const { handler } = require("./device-mgmt/workflow/create-thing-type.js");
+// const event = require("../test/test-data/device-mgmt/workflow/lambda-event/create-thing-type.json");
+
+// const { handler } = require("./map/workflow/update-map-with-device-workflow-service.js");
+// const event = require("../test/workflow-event-data/map/workflow/update-map-with-device-workflow-event.json");
+
+const { handler } = require("./api/websocket/route/disconnect.js");
+const event = require("../test/workflow-event-data/api/websocket/route-event.json");
 
 
 const main = async () => {

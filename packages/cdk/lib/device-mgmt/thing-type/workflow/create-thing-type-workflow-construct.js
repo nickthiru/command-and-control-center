@@ -7,13 +7,14 @@ const { LambdaIntegration } = require("aws-cdk-lib/aws-apigateway");
 const path = require("path");
 
 
-const packageLockJsonFile = "../../../../../package-lock.json";
-
-
-class CreateThingTypeWorkflow extends Construct {
+class CreateThingTypeWorkflowConstruct extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
     console.log("(+) Inside 'CreateThingType' construct");
+
+    const {
+      apiStack,
+    } = props;
 
 
     const lambda = new NodejsFunction(this, "Lambda", {
@@ -24,9 +25,9 @@ class CreateThingTypeWorkflow extends Construct {
       // memorySize: 1024,
       // memorySize: 512,
       // timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../../../src/device-mgmt/workflow/create-thing-type.js")),
+      entry: (path.join(__dirname, "../../../../src/device-mgmt/thing-type/workflow/create-thing-type-workflow-service.js")),
       handler: "handler",
-      depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
+      depsLockFilePath: (path.join(__dirname, "../../../../../../package-lock.json")),
     });
 
     lambda.addToRolePolicy(new PolicyStatement({
@@ -35,8 +36,22 @@ class CreateThingTypeWorkflow extends Construct {
       actions: ["iot:CreateThingType"],
     }));
 
-    this.lambdaIntegration = new LambdaIntegration(lambda);
+    // POST /device-mgmt/thing-type
+    apiStack.httpStack.restApi.root
+      .getResource("device-mgmt")
+      .getResource("thing-type")
+      .addMethod("POST", new LambdaIntegration(lambda));
+
+    // const resource = apiStack.httpStack.restApi.root.getResource("device-mgmt").getResource("thing-type");
+
+    // resource.addMethod("POST", new LambdaIntegration(lambda));
+
+    // resource.addMethod(
+    //   "POST",
+    //   new LambdaIntegration(lambda),
+    //   apiStack.httpStack.optionsWithAuth
+    // );
   }
 }
 
-module.exports = { CreateThingTypeWorkflow };
+module.exports = { CreateThingTypeWorkflowConstruct };

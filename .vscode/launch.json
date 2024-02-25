@@ -11,7 +11,9 @@
       "args": ["${relativeFile}"],
       "env": {
         "CONSUMER_USER_POOL_CLIENT_ID": "3017a5csm9grlgpak5j5lb05uq",
-        "AUTH_FLOW": "USER_PASSWORD_AUTH"
+        "AUTH_FLOW": "USER_PASSWORD_AUTH",
+        "APP_TABLE_NAME": "CdkStackDataStack432D4B2C-AppTable815C50BC-J8C3620RVL0X",
+        "WEBSOCKET_TO_WEB_CLIENT_ROUTE_QUEUE_URL": "https://sqs.us-east-1.amazonaws.com/346761569124/CdkStackApiStackWebSocketStackCA3-WebSocketToWebClientRouteQueue25A-eQlJUcN0ic2E"
       }
     }
   ]

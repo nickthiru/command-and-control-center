@@ -1,18 +1,26 @@
 const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { marshall } = require("@aws-sdk/util-dynamodb");
 
 const ddbClient = new DynamoDBClient();
 
 exports.handler = async (event, context, callback) => {
   console.log("Inside 'connect-route-handler'");
   console.log("event: " + JSON.stringify(event, null, 2));
-  console.log("process.env.webSocketConnectionsTableName: " + process.env.webSocketConnectionsTableName);
+  console.log("process.env.webSocketConnectionsTableName: " + process.env.APP_TABLE_NAME);
+
+  const webSocketConnectionId = event.requestContext.connectionId;
 
   try {
     const result = await ddbClient.send(new PutItemCommand({
-      TableName: process.env.webSocketConnectionsTableName,
-      Item: {
-        connectionId: { S: event.requestContext.connectionId }  // WebSocket connection ID
-      }
+      TableName: process.env.APP_TABLE_NAME,
+      Item: marshall({
+        PK: "WEBSOCKET_CONNECTION_ID",
+        SK: `WEBSOCKET_CONNECTION_ID#${webSocketConnectionId}`,
+        webSocketConnectionId: webSocketConnectionId,
+      }),
+      // Item: {
+      //   connectionId: { S: event.requestContext.connectionId }  // WebSocket connection ID
+      // }
     }));
     console.log(result);
   } catch (err) {

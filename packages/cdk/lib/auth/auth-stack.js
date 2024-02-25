@@ -7,7 +7,7 @@ class AuthStack extends Stack {
     super(scope, id, props);
     console.log("(+) Inside 'AuthStack'");
 
-    this.consumerUserPool = new UserPool(this, "ConsumerUserPool", {
+    this.userPool = new UserPool(this, "UserPool", {
       selfSignUpEnabled: true,
       passwordPolicy: {
         minLength: 8,
@@ -47,7 +47,7 @@ class AuthStack extends Stack {
     //   .withStandardAttributes({ emailVerified: true })
     //   .withCustomAttributes('pointsEarned');
 
-    this.consumerUserPoolClient = this.consumerUserPool.addClient("ConsumerUserPoolClient", {
+    this.userPoolClient = this.userPool.addClient("UserPoolClient", {
       authFlows: {
         userPassword: true,
       },

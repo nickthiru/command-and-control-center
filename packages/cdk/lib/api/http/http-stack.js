@@ -1,23 +1,20 @@
 const { Stack, CfnOutput } = require("aws-cdk-lib");
 const { RestApi, Deployment, Stage, Cors, CognitoUserPoolsAuthorizer, AuthorizationType } = require("aws-cdk-lib/aws-apigateway");
-// const { AccountMgmtApiEndpointsStack } = require("./endpoints/account-mgmt-endpoints-stack");
-const { DeviceMgmtApiEndpointsStack } = require("./service-endpoints/device-mgmt-endpoints-stack");
+
 
 class HttpStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
     console.log("(+) Inside 'ApiStack'");
 
-    const {
-      // authStack,
-      // accountMgmtStack,
-      deviceMgmtStack,
-    } = props;
+    // const {
+    //   authStack,
+    // } = props;
 
 
     /*** API ***/
 
-    const restApi = new RestApi(this, "RestApi");
+    this.restApi = new RestApi(this, "RestApi");
 
     // const authorizer = new CognitoUserPoolsAuthorizer(this, "CognitoUserPoolsAuthorizer", {
     //   cognitoUserPools: [authStack.consumerUserPool],
@@ -26,7 +23,7 @@ class HttpStack extends Stack {
     // authorizer._attachToApi(restApi);
 
     // Attach this to each Resource
-    // const optionsWithAuth = {
+    // this.optionsWithAuth = {
     //   authorizationType: AuthorizationType.COGNITO,
     //   authorizer: {
     //     authorizerId: authorizer.authorizerId,
@@ -34,7 +31,7 @@ class HttpStack extends Stack {
     // };
 
     // Attach this to each HTTP Method endpoint, for each Resource, that requires authenticated access
-    const optionsWithCors = {
+    this.optionsWithCors = {
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: Cors.ALL_METHODS
@@ -52,22 +49,6 @@ class HttpStack extends Stack {
     //   deployment: deployment,
     //   stageName: "dev",
     // });
-
-
-    /*** API Endpoints of Services */
-
-    // new AccountMgmtApiEndpointsStack(this, "AccountMgmtApiEndpointsStack", {
-    //   restApi,
-    //   optionsWithCors,
-    //   accountMgmtStack,  // To access Lambda integration
-    // });
-
-    new DeviceMgmtApiEndpointsStack(this, "DeviceMgmtApiEndpointsStack", {
-      restApi,
-      optionsWithCors,   // Set this on each resource
-      // optionsWithAuth,   // Set this on each resource method (that requires authenticated access)
-      deviceMgmtStack,  // To access Lambda integration
-    });
 
 
 
