@@ -8,7 +8,10 @@
   import SignInPage from "./lib/page/SignInPage.svelte";
   import HomePage from "./lib/page/HomePage.svelte";
   import VerifyOtpPage from "./lib/page/VerifyOtpPage.svelte";
+  import WebSocketConnection from "./lib/util/WebSocketConnection.svelte";
 </script>
+
+<WebSocketConnection />
 
 <Router>
 
