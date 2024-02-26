@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "a270d00b-8421-4d2f-a9dc-010fad9eb3ff",
+		"name": "HTTP API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "17148380-a270d00b-8421-4d2f-a9dc-010fad9eb3ff"
+	},
+	"item": [
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "sign-up",
+					"item": [
+						{
+							"name": "Submit sign up form",
+							"id": "b25c47da-c1a8-43b7-b7e7-0d47f705c2ae",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/account/sign-up",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"account",
+										"sign-up"
+									]
+								},
+								"description": "Submit sign up form"
+							},
+							"response": [
+								{
+									"id": "407478ec-d7ba-4951-a7c6-145bab2c5449",
+									"name": "Successfully signed up user",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/account/sign-up",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"account",
+												"sign-up"
+											]
+										},
+										"description": "Submit sign up form"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"_postman_previewtype": "html",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"username\": \"<string>\",\n  \"password\": \"<string>\",\n  \"email\": \"<string>\"\n}"
+								}
+							]
+						}
+					],
+					"id": "b83603ec-811e-4e44-8190-b422984949c0"
+				}
+			],
+			"id": "e666f26d-2c96-4090-9f43-4b6d82357897"
+		}
+	],
+	"variable": [
+		{
+			"id": "64767588-fdfc-4c32-ad1d-c3b1db28579e",
+			"key": "baseUrl",
+			"value": "https://rri1nqkdad.execute-api.us-east-1.amazonaws.com/prod"
+		}
+	]
+}
