@@ -1,5 +1,7 @@
 const { Stack, CfnOutput } = require("aws-cdk-lib");
 const { RestApi, Deployment, Stage, Cors, CognitoUserPoolsAuthorizer, AuthorizationType } = require("aws-cdk-lib/aws-apigateway");
+const { AccountApiEndpointsStack } = require("./api-endpoints/account-endpoints-stack");
+const { DeviceApiEndpointsStack } = require("./api-endpoints/device-endpoints-stack");
 
 
 class HttpStack extends Stack {
@@ -7,9 +9,11 @@ class HttpStack extends Stack {
     super(scope, id, props);
     console.log("(+) Inside 'ApiStack'");
 
-    // const {
-    //   authStack,
-    // } = props;
+    const {
+      dataStack,
+      // authStack,
+      lambdaStack,
+    } = props;
 
 
     /*** API ***/
@@ -49,6 +53,17 @@ class HttpStack extends Stack {
     //   deployment: deployment,
     //   stageName: "dev",
     // });
+
+
+
+    /*** Services API Endpoints ***/
+
+    new AccountApiEndpointsStack(this, "AccountApiEndpointsStack", {
+      lambdaStack,
+    });
+    new DeviceApiEndpointsStack(this, "DeviceApiEndpointsStack", {
+      lambdaStack,
+    });
 
 
 

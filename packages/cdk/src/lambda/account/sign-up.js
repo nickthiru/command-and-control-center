@@ -1,50 +1,66 @@
-const { CognitoIdentityProviderClient, ConfirmSignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
+const { CognitoIdentityProviderClient, SignUpCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
 // const Account = require("../service.js");
 const Api = require("../../api/service.js");
 
-// For local dev
-// require('dotenv').config();
 
 const cognitoClient = new CognitoIdentityProviderClient();
 
 
 exports.handler = async (event) => {
-  console.log("Inside 'confirmSignUp' handler");
+  console.log("Inside 'signUp' handler");
   console.log("event: \n" + JSON.stringify(event, null, 2));
+
 
   const [consumerUserPoolClientId] = getProcessData(process);
 
   const [
     username,
-    confirmationCode,
+    password,
+    emailAddress,
   ] = getEventData(event);
 
-  // const confirmSignUpResult = await Account.confirmSignUp(
+  // const signUpResult = await Account.signUp(
   //   cognitoClient,
-  //   ConfirmSignUpCommand,
+  //   SignUpCommand,
   //   consumerUserPoolClientId,
   //   username,
-  //   confirmationCode,
+  //   password,
+  //   emailAddress,
   // );
 
   try {
 
-    const confirmSignUpResponse = await cognitoClient.send(new ConfirmSignUpCommand({
+    var signUpCommandResponse = await cognitoClient.send(new SignUpCommand({
       ClientId: consumerUserPoolClientId,
       Username: username,
-      ConfirmationCode: confirmationCode,
+      Password: password,
+      UserAttributes: [
+        {
+          Name: "email",
+          Value: emailAddress,
+        },
+      ],
     }));
 
-    console.log("(+) confirmSignUpResponse: " + JSON.stringify(confirmSignUpResponse, null, 2));
+    // const signUpResponse = { // SignUpResponse
+    //   UserConfirmed: true, // required
+    //   CodeDeliveryDetails: { // CodeDeliveryDetailsType
+    //     Destination: "STRING_VALUE",
+    //     DeliveryMedium: "EMAIL",
+    //     AttributeName: "STRING_VALUE",
+    //   },
+    //   UserSub: "STRING_VALUE", // required
+    // };
+    console.log("(+) signUpResponse: " + JSON.stringify(signUpResponse, null, 2));
 
-    return confirmSignUpResponse;
+    return signUpResponse;
 
   } catch (error) {
     console.log(error);
   }
 
-  const response = prepareResponse();
+  const response = prepareResponse(signUpCommandResponse);
 
   return response;
 }
@@ -68,16 +84,20 @@ function getEventData(event) {
 
   const body = JSON.parse(event.body);
   console.log("(+) body.Username: " + body.Username);
-  console.log("(+) body.ConfirmationCode: " + body.ConfirmationCode);
+  console.log("(+) body.Password: " + body.Password);
+  console.log("(+) body.EmailAddress: " + body.EmailAddress);
 
   const username = body.Username;
-  const confirmationCode = body.ConfirmationCode;
+  const password = body.Password;
+  const emailAddress = body.EmailAddress;
   console.log("(+) username: " + username);
-  console.log("(+) confirmationCode: " + confirmationCode);
+  console.log("(+) password: " + password);
+  console.log("(+) emailAddress: " + emailAddress);
 
   return [
     username,
-    confirmationCode,
+    password,
+    emailAddress,
   ];
 }
 
@@ -93,11 +113,11 @@ function prepareResponse() {
   };
   console.log("(+) headers: " + JSON.stringify(headers));
 
-  // const body = JSON.stringify(confirmSignUpResult);
+  // const body = JSON.stringify(signUpResult);
   // console.log("(+) body: " + JSON.stringify(body));
 
   const body = JSON.stringify({
-    Message: "User account OTP verification complete."
+    Message: "User account registered. Needs confirmation via OTP."
   });
   console.log("(+) body: " + JSON.stringify(body));
 

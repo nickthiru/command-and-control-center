@@ -37,7 +37,7 @@ exports.handler = async (event) => {
 
   try {
 
-    const initiateAuthResponse = await cognitoClient.send(new InitiateAuthCommand({
+    var initiateAuthCommandResponse = await cognitoClient.send(new InitiateAuthCommand({
       ClientId: consumerUserPoolClientId,
       AuthFlow: authFlow,
       AuthParameters: {
@@ -65,21 +65,13 @@ exports.handler = async (event) => {
     //     },
     //   },
     // };
-    console.log("(+) initiateAuthResponse: " + JSON.stringify(initiateAuthResponse, null, 2));
-
-    var accessToken = initiateAuthResponse.AuthenticationResult.AccessToken;
-    var expiresIn = initiateAuthResponse.AuthenticationResult.ExpiresIn
-
-    // return {
-    //   accessToken,
-    //   expiresIn,
-    // };
+    console.log("(+) initiateAuthCommandResponse: " + JSON.stringify(initiateAuthCommandResponse, null, 2));
 
   } catch (error) {
     console.log(error);
   }
 
-  const response = prepareResponse(signInResult);
+  const response = prepareResponse(initiateAuthCommandResponse);
 
   return response;
 }
@@ -125,7 +117,7 @@ function getEventData(event) {
 }
 
 
-function prepareResponse(signInResult) {
+function prepareResponse(initiateAuthCommandResponse) {
   console.log("Inside 'prepareResponse()'");
 
   const corsHeader = Api.addCorsHeader();
@@ -137,8 +129,8 @@ function prepareResponse(signInResult) {
   console.log("(+) headers: " + JSON.stringify(headers));
 
   const body = JSON.stringify({
-    AccessToken: signInResult.accessToken,
-    ExpiresIn: signInResult.expiresIn,
+    AccessToken: initiateAuthCommandResponse.AuthenticationResult.AccessToken,
+    ExpiresIn: initiateAuthCommandResponse.AuthenticationResult.ExpiresIn,
   });
   console.log("(+) body: " + JSON.stringify(body));
 
@@ -148,3 +140,19 @@ function prepareResponse(signInResult) {
     body: body,
   };
 }
+
+/*
+Error:
+
+NotAuthorizedException: Incorrect username or password.
+    at de_NotAuthorizedExceptionRes (C:\Users\nickt\Projects\movie-review-app\node_modules\@aws-sdk\client-cognito-identity-provider\dist-cjs\protocols\Aws_json1_1.js:6419:23)
+    at de_InitiateAuthCommandError (C:\Users\nickt\Projects\movie-review-app\node_modules\@aws-sdk\client-cognito-identity-provider\dist-cjs\protocols\Aws_json1_1.js:4321:25)
+    at process.processTicksAndRejections (c:\Users\nickt\Projects\movie-review-app\lib\internal\process\task_queues.js:95:5)
+    at async C:\Users\nickt\Projects\movie-review-app\node_modules\@smithy\middleware-serde\dist-cjs\deserializerMiddleware.js:7:24
+    at async C:\Users\nickt\Projects\movie-review-app\node_modules\@smithy\middleware-retry\dist-cjs\retryMiddleware.js:31:46
+    at async C:\Users\nickt\Projects\movie-review-app\node_modules\@aws-sdk\middleware-logger\dist-cjs\loggerMiddleware.js:7:26
+    at async Object.signIn (c:\Users\nickt\Projects\movie-review-app\packages\cdk\src\account\service-method\sign-in.js:12:34)
+    at async exports.handler (c:\Users\nickt\Projects\movie-review-app\packages\cdk\src\account\workflow\sign-in.js:28:24)
+    at async main (C:\Users\nickt\Projects\movie-review-app\packages\cdk\src\runner.js:16:20) {name: 'NotAuthorizedException', $fault: 'client', $metadata: {…}, __type: 'NotAuthorizedException', stack: 'NotAuthorizedException: Incorrect username or…-review-app\packages\cdk\src\runner.js:16:20)', …}
+
+*/

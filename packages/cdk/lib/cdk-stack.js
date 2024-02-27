@@ -6,6 +6,9 @@ const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
 const { PolicyStack } = require('./policy/policy-stack');
 const { DataStack } = require('./data/data-stack');
 const { MapStack } = require('./map/map-stack');
+const { IotStack } = require('./iot/iot-stack');
+const { SnsStack } = require('./sns/sns-stack');
+const { LambdaStack } = require('./lambda/lambda-stack');
 
 class CdkStack extends Stack {
   /**
@@ -20,15 +23,26 @@ class CdkStack extends Stack {
 
     /*** Utilities ***/
 
-    const dataStack = new DataStack(this, "DataStack");
+    const data = new DataStack(this, "DataStack");
 
     // const authStack = new AuthStack(this, "AuthStack")
 
-    const policyStack = new PolicyStack(this, "PolicyStack");
+    const policy = new PolicyStack(this, "PolicyStack");
+
+    const sns = new SnsStack(this, "SnsStack");
+
+    const lambda = new LambdaStack(this, "LambdaStack", {
+      snsStack,
+    });
+
+    new IotStack(this, "IotStack", {
+      lambda,
+    });
 
     const apiStack = new ApiStack(this, "ApiStack", {
-      dataStack,
+      data,
       // authStack,
+      lambda,
     });
 
 
@@ -39,14 +53,16 @@ class CdkStack extends Stack {
     //   authStack,
     // });
 
-    const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack", {
-      apiStack,
-      policyStack,
-    });
+    // const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack", {
+    //   apiStack,
+    //   policyStack,
+    // });
 
-    new MapStack(this, "MapStack", {
-      apiStack,
-    })
+    // new MapStack(this, "MapStack", {
+    //   apiStack,
+    //   snsStack,
+    //   iotStack,
+    // });
   }
 }
 
