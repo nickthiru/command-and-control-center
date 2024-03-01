@@ -12,18 +12,21 @@ Feature: View map marker showing device location
           - IoT device sends GPS data
 
         Primary input:
-          - GPS data from a device
+          Device payload:
+            - Device ID
+            - Longitude
+            - Latitude
 
         Other input:
           -
 
-        Output events (on success):
+        Output event (on success):
           -
 
-        Output events (on error):
+        Output event (on error):
           -
 
-        Side-effects:
+        Side-effect:
           -
 
 
@@ -35,43 +38,65 @@ Feature: View map marker showing device location
 
           IoT TopicRule
             - DeviceGpsReceived
+          
+          SNS
+            - DeviceGpsReceived
 
 
           API:
 
-            # "POST /domain/action"
-
-            #   Request validation:
-
-            #   Return:
-
             WebSocket:
 
-              Route:
+              SnsToSqs: toWebClientWebSocketRouteQueue
 
 
         Web:
 
-          PubSub: 
-
-
+          PubSub:
+            - DeviceGpsReceived
+          
+          Store:
+          - GeoJSON file
 
 
         Workflow:
 
-          Receive device GPS data from IoT Device on IoT Core message broker
+          Backend:
 
-            Device sends payload to topic "dt/map/<ThingName>"
+            device sends payload to MQTT topic "dt/map/<ThingName>"
           
-            Check the Device Registry for the device to see if GPS coordinates exist.
-            
-            If there are no coordinates (we can assume that the device is connecting for the first time), then save them, and send a message to the frontend to save it in indexedDb and display on the map (i.e. map refresh alert).
+            Fn: SaveDeviceGpsIfFirstTimeConnecting
+              Input:
+                - Device payload
+              Output event:
+                - DeviceGpsReceived
+
+              check the Device Registry for the device to see if GPS coordinates exist.
               
-            If coordinates exist, then compare the values and send an alert if the coordinates are out of acceptable range.
+              if there are no coordinates (we can assume that the device is connecting for the first time), then:
 
+                save them in Device Registry
+                
+                if coordinates exist, then compare the values and send an alert if the coordinates are out of acceptable range.
+
+                    TODO
+                          
+                publish GPS data to SNS
           
-          
-          Send GPS data to frontend
+          Frontend:
+
+            receive and publish the device payload to PubSub
+
+            save Device ID, Longitude, and Latitude in indexedDb
+
+            # update GeoJSON file containing device GPS coordinates
+            
+            # display alert to refresh map
+
+            # when alert is clicked, then
+            #   read GeoJSON file
+
+            #   it should disply a new marker
 
 
 
