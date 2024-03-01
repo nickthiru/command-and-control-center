@@ -7,12 +7,11 @@ const { DeviceApiEndpointsStack } = require("./api-endpoints/device-endpoints-st
 class HttpStack extends Stack {
   constructor(scope, id, props) {
     super(scope, id, props);
-    console.log("(+) Inside 'ApiStack'");
+    console.log("(+) Inside 'HttpStack'");
 
     const {
-      dataStack,
-      // authStack,
-      lambdaStack,
+      // auth,
+      lambda,
     } = props;
 
 

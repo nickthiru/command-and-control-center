@@ -38,22 +38,11 @@ class AuthStack extends Stack {
       },
     });
 
-
-    // const clientWriteAttributes = (new cognito.ClientAttributes())
-    //   .withStandardAttributes({ fullname: true, email: true })
-    //   .withCustomAttributes('favouritePizza', 'favouriteBeverage');
-
-    // const clientReadAttributes = clientWriteAttributes
-    //   .withStandardAttributes({ emailVerified: true })
-    //   .withCustomAttributes('pointsEarned');
-
     this.userPoolClient = this.userPool.addClient("UserPoolClient", {
       authFlows: {
         userPassword: true,
       },
       accessTokenValidity: Duration.hours(8),
-      // readAttributes: clientReadAttributes,
-      // writeAttributes: clientWriteAttributes,
     });
 
 
@@ -73,7 +62,6 @@ class AuthStack extends Stack {
       exportName: "ConsumerUserPoolClientId"
     });
   }
-
 }
 
 module.exports = { AuthStack };
