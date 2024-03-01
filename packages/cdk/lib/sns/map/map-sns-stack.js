@@ -7,8 +7,7 @@ class MapSnsStack extends Stack {
     super(scope, id, props);
     console.log("(+) Inside 'MapSnsStack'");
 
-
-    this.deviceGpsDataReceivedTopic = new Topic(this, "DeviceGpsDataReceivedTopic");
+    this.deviceGpsReceived = new Topic(this, "DeviceGpsReceivedTopic");
   }
 }
 

@@ -8,7 +8,6 @@ class PolicyStack extends Stack {
     console.log("(+) Inside 'PolicyStack'");
 
     this.iot = new IotPolicyStack(this, "IotPolicyStack");
-
   }
 }
 

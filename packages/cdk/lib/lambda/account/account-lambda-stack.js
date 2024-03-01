@@ -21,7 +21,7 @@ class AccountLambdaStack extends Stack {
 
     /*** Frontend Workflows ***/
 
-    this.signUpLambda = new NodejsFunction(this, "AccountSignUpLambda", {
+    this.signUp = new NodejsFunction(this, "AccountSignUpLambda", {
       bundling: {
         externalModules: ["@aws-sdk"]
       },
@@ -37,7 +37,7 @@ class AccountLambdaStack extends Stack {
       }
     });
 
-    this.confirmSignUpLambda = new NodejsFunction(this, "Lambda", {
+    this.confirmSignUp = new NodejsFunction(this, "Lambda", {
       bundling: {
         externalModules: ["@aws-sdk"]
       },
@@ -53,7 +53,7 @@ class AccountLambdaStack extends Stack {
       }
     });
 
-    this.signInLambda = new NodejsFunction(this, "Lambda", {
+    this.signIn = new NodejsFunction(this, "Lambda", {
       bundling: {
         externalModules: ["@aws-sdk"]
       },

@@ -18,7 +18,7 @@ class MapLambdaStack extends Stack {
     // } = props;
 
 
-    this.updateDeviceLocationsOnMapLambda = new NodejsFunction(this, "UpdateDeviceLocationsOnMapLambda", {
+    this.updateDeviceLocationOnMap = new NodejsFunction(this, "UpdateDeviceLocationsOnMapLambda", {
       bundling: {
         externalModules: ["@aws-sdk"]
       },
@@ -42,17 +42,16 @@ class MapLambdaStack extends Stack {
         }),
       ]
     });
-
-    // lambda.addToRolePolicy(new PolicyStatement({
+    // updateDeviceLocationOnMap.addToRolePolicy(new PolicyStatement({
     //   effect: Effect.ALLOW,
     //   resources: [`arn:aws:sqs:us-east-1:346761569124:${apiStack.websocketStack.webSocketToWebClientRouteQueue.queueName}`],
     //   actions: ["sqs:SendMessage"],
     // }));
 
-    new LambdaToSqs(this, "LambdaToSqs", {
-      existingLambdaObj: lambda,
-      existingQueueObj: apiStack.websocketStack.webSocketToWebClientRouteQueue,
-    });
+    // new LambdaToSqs(this, "LambdaToSqs", {
+    //   existingLambdaObj: lambda,
+    //   existingQueueObj: apiStack.websocketStack.webSocketToWebClientRouteQueue,
+    // });
 
     // Trigger Event
     //  iotStack.deviceMapDataReceivedTopicRule.addAction(new LambdaFunctionAction(lambda));

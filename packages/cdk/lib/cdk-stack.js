@@ -4,11 +4,12 @@ const { Stack } = require('aws-cdk-lib');
 const { ApiStack } = require('./api/api-stack');
 const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
 const { PolicyStack } = require('./policy/policy-stack');
-const { DataStack } = require('./data/data-stack');
+const { StorageStack } = require('./storage/storage-stack');
 const { MapStack } = require('./map/map-stack');
 const { IotStack } = require('./iot/iot-stack');
 const { SnsStack } = require('./sns/sns-stack');
 const { LambdaStack } = require('./lambda/lambda-stack');
+
 
 class CdkStack extends Stack {
   /**
@@ -23,26 +24,27 @@ class CdkStack extends Stack {
 
     /*** Utilities ***/
 
-    const data = new DataStack(this, "DataStack");
+    const storage = new StorageStack(this, "StorageStack");
 
-    // const authStack = new AuthStack(this, "AuthStack")
+    // const auth = new AuthStack(this, "AuthStack")
 
     const policy = new PolicyStack(this, "PolicyStack");
 
     const sns = new SnsStack(this, "SnsStack");
 
     const lambda = new LambdaStack(this, "LambdaStack", {
-      snsStack,
+      sns,
     });
 
-    new IotStack(this, "IotStack", {
+    const iot = new IotStack(this, "IotStack", {
       lambda,
     });
 
     const apiStack = new ApiStack(this, "ApiStack", {
       data,
-      // authStack,
+      // auth,
       lambda,
+      storage,
     });
 
 

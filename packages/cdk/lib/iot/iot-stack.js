@@ -1,6 +1,5 @@
 const { Stack } = require("aws-cdk-lib");
-const { TopicRule, IotSql } = require("@aws-cdk/aws-iot-alpha");
-const { LambdaFunctionAction } = require("@aws-cdk/aws-iot-actions-alpha");
+const { TopicRuleStack } = require("./rule/topic-rule-stack");
 
 
 class IotStack extends Stack {
@@ -9,15 +8,12 @@ class IotStack extends Stack {
     console.log("(+) Inside 'IotStack'");
 
     const {
-      lambdaStack,
+      lambda,
     } = props;
 
 
-    this.deviceGpsDataReceivedTopicRule = new TopicRule(this, "DeviceGpsDataReceivedTopicRule", {
-      // topicRuleName: "UpdateMapWithDeviceTopicRule",
-      description: "Longitude and latitude coordinates of a device, to update the map with a marker",
-      sql: IotSql.fromStringAsVer20160323("SELECT topic(3) AS deviceId, lo AS longitude, la AS latitude FROM 'dt/map/+'"),
-      actions: [new LambdaFunctionAction()]
+    this.topicRule = new TopicRuleStack(this, "TopicRuleStack", {
+      lambda,
     });
   }
 }
