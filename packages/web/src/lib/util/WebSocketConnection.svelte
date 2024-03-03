@@ -1,20 +1,36 @@
 <script>
+  
   import { onDestroy } from "svelte";
-  import { CdkStackApiStackWebSocketStackCA37355C as webSocketStack } from "../../../../cdk/outputs.json";
+  import { CdkStackApiStackWebSocketStackCA37355C as ApiStackWebSocketStack } from "../../../../cdk/outputs.json";
 
-  let webSocket = new WebSocket(webSocketStack.DevStageWebSocketApiEndpoint);
+  console.log("(+) Inside 'WebSocketConnection.svelte'");
+
+  export let pubsub;
+
+  let webSocket = new WebSocket(ApiStackWebSocketStack.DevStageWebSocketApiEndpoint);
 
   webSocket.addEventListener("open", () => {
     console.log("WebSocket is connected");
   });
 
   webSocket.addEventListener("error", (error) => {
-    console.log("WebSocket error: " + error);
+    console.log("WebSocket error: " + JSON.stringify(error, null, 2));
   });
 
   webSocket.addEventListener("message", (event) => {
-    // console.log("(+) message: " + JSON.stringify(event.data, null, 2));
-    console.log("(+) message: " + event.data);
+    let data = JSON.parse(event.data);
+
+    let eventTopic = data.event;
+
+    let eventData = {
+      deviceId: data.deviceId,
+      longitude: data.longitude,
+      latitude: data.latitude,
+    };
+    console.log("(+) eventTopic: " + eventTopic);
+    console.log("(+) eventData: " + JSON.stringify(eventData));
+
+    pubsub.queue(eventTopic, eventData);
   });
 
   webSocket.addEventListener("close", (event) => {
@@ -25,4 +41,5 @@
   onDestroy(() => {
     webSocket.close();
   });
+
 </script>

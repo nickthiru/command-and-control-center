@@ -24,6 +24,8 @@
     "vite": "^5.0.8"
   },
   "dependencies": {
-    "@k4ung/svelte-otp": "^0.0.9"
+    "@k4ung/svelte-otp": "^0.0.9",
+    "pubsub-js": "^1.9.4",
+    "queue": "^7.0.0"
   }
 }
