@@ -8,8 +8,8 @@ class ThingWorkflowsStack extends Stack {
     console.log("(+) Inside 'DeviceMgmtStack'");
 
     const {
-      apiStack,
-      policyStack,
+      api,
+      policy,
     } = props;
 
 
@@ -23,8 +23,8 @@ class ThingWorkflowsStack extends Stack {
 
 
     this.createThingWorkflow = new CreateThingWorkflowConstruct(this, "CreateThingWorkflowConstruct", {
-      apiStack,
-      policyStack,
+      api,
+      policy,
     });
   }
 }

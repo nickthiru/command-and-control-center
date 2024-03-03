@@ -2,13 +2,13 @@ const { Stack } = require('aws-cdk-lib');
 // const { AuthStack } = require('./auth/main-stack');
 // const { AccountMgmtStack } = require('./account-mpmt/main-stack');
 const { ApiStack } = require('./api/api-stack');
-const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
-const { PolicyStack } = require('./policy/policy-stack');
+// const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
+// const { PolicyStack } = require('./policy/policy-stack');
 const { StorageStack } = require('./storage/storage-stack');
 const { MapStack } = require('./map/map-stack');
-const { IotStack } = require('./iot/iot-stack');
-const { SnsStack } = require('./sns/sns-stack');
-const { LambdaStack } = require('./lambda/lambda-stack');
+// const { IotStack } = require('./iot/iot-stack');
+// const { SnsStack } = require('./sns/sns-stack');
+// const { LambdaStack } = require('./lambda/lambda-stack');
 
 
 class CdkStack extends Stack {
@@ -28,22 +28,21 @@ class CdkStack extends Stack {
 
     // const auth = new AuthStack(this, "AuthStack")
 
-    const policy = new PolicyStack(this, "PolicyStack");
+    // const policy = new PolicyStack(this, "PolicyStack");
 
-    const sns = new SnsStack(this, "SnsStack");
+    // const sns = new SnsStack(this, "SnsStack");
 
-    const lambda = new LambdaStack(this, "LambdaStack", {
-      sns,
-    });
+    // const lambda = new LambdaStack(this, "LambdaStack", {
+    //   sns,
+    // });
 
-    const iot = new IotStack(this, "IotStack", {
-      lambda,
-    });
+    // const iot = new IotStack(this, "IotStack", {
+    //   lambda,
+    // });
 
-    const apiStack = new ApiStack(this, "ApiStack", {
-      data,
+    const api = new ApiStack(this, "ApiStack", {
       // auth,
-      lambda,
+      // lambda,
       storage,
     });
 
@@ -51,20 +50,20 @@ class CdkStack extends Stack {
     /*** Business Domains ***/
 
     // const accountMgmtStack = new AccountMgmtStack(this, "AccountMgmtStack", {
-    //   apiStack,
-    //   authStack,
+    //   api,
+    //   auth,
     // });
 
     // const deviceMgmtStack = new DeviceMgmtStack(this, "DeviceMgmtStack", {
-    //   apiStack,
-    //   policyStack,
+    //   api,
+    //   policy,
     // });
 
-    // new MapStack(this, "MapStack", {
-    //   apiStack,
-    //   snsStack,
-    //   iotStack,
-    // });
+    new MapStack(this, "MapStack", {
+      api,
+      // sns,
+      // iot,
+    });
   }
 }
 

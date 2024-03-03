@@ -9,8 +9,8 @@ class ApiStack extends Stack {
 
     const {
       // auth,
-      lambda,
-      sqs,
+      // lambda,
+      // sqs,
       storage,
     } = props;
 
@@ -22,9 +22,8 @@ class ApiStack extends Stack {
 
     this.webSocket = new WebSocketStack(this, "WebSocketStack", {
       // auth,
-      data,
-      lambda,
-      sqs,
+      // lambda,
+      // sqs,
       storage,
     });
   }

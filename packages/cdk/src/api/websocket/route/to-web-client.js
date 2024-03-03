@@ -18,10 +18,11 @@ const ddbClient = new DynamoDBClient();
 
 exports.handler = async (event, context, callback) => {
   console.log("Inside 'to web client' handler");
-  console.log("event: " + JSON.stringify(event));
+  console.log("event: " + JSON.stringify(event, null, 2));
 
   // 'event' object is sent by SQS
   const eventBody = JSON.parse(event["Records"][0]["body"]);
+  const message = eventBody.Message;
 
   try {
 
@@ -47,27 +48,11 @@ exports.handler = async (event, context, callback) => {
       console.log("sending message...");
       const postToConnectionCommandResponse = await apiGwMgmtApiClient.send(new PostToConnectionCommand({
         ConnectionId: Item.webSocketConnectionId,
-        Data: JSON.stringify(eventBody),
+        // Data: JSON.stringify(eventBody),
+        Data: message,
       }));
       console.log("postToConnectionCommandResponse: " + JSON.stringify(postToConnectionCommandResponse, null, 2));
     });
-
-    // Items.forEach(async (Item) => {
-    //   const unmarshalledItem = unmarshall(Item);
-    //   console.log("connectionId: " + String(unmarshalledItem["webSocketConnectionId"]));
-    //   console.log("sending message...");
-
-    //   try {
-    //     const result = await apiGwMgmtApiClient.send(new PostToConnectionCommand({
-    //       ConnectionId: unmarshalledItem["connectionId"],
-    //       Data: body["Message"]
-    //     }));
-    //     console.log("result: " + result);
-    //   }
-    //   catch (err) {
-    //     console.error(err);
-    //   }
-    // });
 
   } catch (err) {
     console.error(err);

@@ -94,7 +94,7 @@ Feature: View map marker showing device location
             # display alert to refresh map
 
             # when alert is clicked, then
-            #   read GeoJSON file
+            #   read GeoJSON file and set/update svelte store holding the same
 
             #   it should disply a new marker
 

@@ -1,21 +1,13 @@
 {
-  "CdkStackDataStack432D4B2C": {
-    "ExportsOutputFnGetAttAppTable815C50BCArnF3D9E3C3": "arn:aws:dynamodb:us-east-1:346761569124:table/CdkStackDataStack432D4B2C-AppTable815C50BC-J8C3620RVL0X",
-    "ExportsOutputRefAppTable815C50BC1988FCFB": "CdkStackDataStack432D4B2C-AppTable815C50BC-J8C3620RVL0X"
+  "CdkStackStorageStack887CC089": {
+    "ExportsOutputFnGetAttMainTable74195DABArnE0EC388B": "arn:aws:dynamodb:us-east-1:346761569124:table/CdkStackStorageStack887CC089-MainTable74195DAB-DDWVIX9VVZX5",
+    "ExportsOutputRefMainTable74195DAB4503BD7E": "CdkStackStorageStack887CC089-MainTable74195DAB-DDWVIX9VVZX5"
   },
-  "CdkStackDeviceMgmtStackThingTypeStackB3D3FFBA": {
-    "ExportsOutputFnGetAttCreateThingTypeWorkflowConstructLambda44475932ArnF16C6AD7": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackDeviceMgmtStackTh-CreateThingTypeWorkflowC-Qle7hmaONLhJ"
-  },
-  "CdkStackDeviceMgmtStackThingStack279114A8": {
-    "ExportsOutputFnGetAttCreateThingWorkflowConstructLambdaCD220F50Arn55074BD6": "arn:aws:lambda:us-east-1:346761569124:function:CdkStackDeviceMgmtStackTh-CreateThingWorkflowConst-UQtXvt8YtTtw"
+  "CdkStackMapStackMapMarkerShowingDeviceLocationD8CD2916": {
+    "CfnOutput": "DeviceGpsReceived",
+    "ExportsOutputRefDeviceGpsReceivedTopic280E4352ACB30C51": "arn:aws:sns:us-east-1:346761569124:DeviceGpsReceived"
   },
   "CdkStackApiStackWebSocketStackCA37355C": {
-    "ExportsOutputFnGetAttWebSocketToWebClientRouteQueue25A3FDFCArnA8E69888": "arn:aws:sqs:us-east-1:346761569124:CdkStackApiStackWebSocketStackCA3-WebSocketToWebClientRouteQueue25A-eQlJUcN0ic2E",
-    "DevStageWebSocketApiEndpoint": "wss://5rzawp84de.execute-api.us-east-1.amazonaws.com/dev",
-    "ExportsOutputRefWebSocketToWebClientRouteQueue25A3FDFCAA668969": "https://sqs.us-east-1.amazonaws.com/346761569124/CdkStackApiStackWebSocketStackCA3-WebSocketToWebClientRouteQueue25A-eQlJUcN0ic2E",
-    "ExportsOutputFnGetAttWebSocketToWebClientRouteQueue25A3FDFCQueueName6B68CCC6": "CdkStackApiStackWebSocketStackCA3-WebSocketToWebClientRouteQueue25A-eQlJUcN0ic2E"
-  },
-  "CdkStackApiStackHttpStack813D57AD": {
-    "RestApiEndpoint0551178A": "https://fxp8r7vdef.execute-api.us-east-1.amazonaws.com/prod/"
+    "DevStageWebSocketApiEndpoint": "wss://gimdnx6h3b.execute-api.us-east-1.amazonaws.com/dev"
   }
 }

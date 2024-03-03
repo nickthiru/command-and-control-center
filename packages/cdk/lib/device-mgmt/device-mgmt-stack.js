@@ -9,22 +9,22 @@ class DeviceMgmtStack extends Stack {
     console.log("(+) Inside 'DeviceMgmtStack'");
 
     const {
-      apiStack,
-      policyStack,
+      api,
+      policy,
     } = props;
 
 
     // /device-mgmt
-    apiStack.httpStack.restApi.root.addResource("device-mgmt", apiStack.httpStack.optionsWithCors);
+    // apiStack.httpStack.restApi.root.addResource("device-mgmt", apiStack.httpStack.optionsWithCors);
 
 
     new ThingTypeWorkflowsStack(this, "ThingTypeStack", {
-      apiStack,
+      api,
     });
 
     new ThingWorkflowsStack(this, "ThingStack", {
-      apiStack,
-      policyStack,
+      api,
+      policy,
     });
   }
 }

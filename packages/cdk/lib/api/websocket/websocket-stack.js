@@ -1,5 +1,4 @@
 const { Stack, CfnOutput, RemovalPolicy } = require("aws-cdk-lib");
-const { Table, AttributeType, BillingMode } = require("aws-cdk-lib/aws-dynamodb");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 const { WebSocketApi, WebSocketStage } = require("aws-cdk-lib/aws-apigatewayv2");
@@ -21,8 +20,8 @@ class WebSocketStack extends Stack {
     super(scope, id, props);
 
     const {
-      // authStack,
-      dataStack,
+      // auth,
+      storage,
     } = props;
 
 
@@ -34,7 +33,7 @@ class WebSocketStack extends Stack {
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        APP_TABLE_NAME: dataStack.appTable.tableName,
+        APP_TABLE_NAME: storage.mainTable.tableName,
       }
     });
 
@@ -44,7 +43,7 @@ class WebSocketStack extends Stack {
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        APP_TABLE_NAME: dataStack.appTable.tableName,
+        APP_TABLE_NAME: storage.mainTable.tableName,
       }
     });
 
@@ -54,7 +53,7 @@ class WebSocketStack extends Stack {
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
       environment: {
-        APP_TABLE_NAME: dataStack.appTable.tableName,
+        APP_TABLE_NAME: storage.mainTable.tableName,
       }
     });
 
@@ -65,8 +64,8 @@ class WebSocketStack extends Stack {
     //   handler: "handler",
     //   depsLockFilePath: (path.join(__dirname, packageLockJsonFile)),
     //   environment: {
-    //     USER_POOL_ID: authStack.userPool.userPoolId,
-    //     USER_POOL_CLIENT_ID: authStack.userPoolClient.userPoolClientId,
+    //     USER_POOL_ID: auth.userPool.userPoolId,
+    //     USER_POOL_CLIENT_ID: auth.userPoolClient.userPoolClientId,
     //   }
     // });
 
@@ -159,7 +158,7 @@ class WebSocketStack extends Stack {
         }),
       ],
       environment: {
-        APP_TABLE_NAME: dataStack.appTable.tableName,
+        APP_TABLE_NAME: storage.mainTable.tableName,
         WEBSOCKET_API_CONNECTION_URL: `https://${webSocketApi.apiId}.execute-api.us-east-1.amazonaws.com/${devWebSocketStage.stageName}`
       }
     });
@@ -198,9 +197,9 @@ class WebSocketStack extends Stack {
 
     /*** Permissions ***/
 
-    dataStack.appTable.grantReadWriteData(webSocketConnectRouteLambda);
-    dataStack.appTable.grantReadWriteData(webSocketDisconnectRouteLambda);
-    dataStack.appTable.grantReadWriteData(webSocketToWebClientRouteLambda);
+    storage.mainTable.grantReadWriteData(webSocketConnectRouteLambda);
+    storage.mainTable.grantReadWriteData(webSocketDisconnectRouteLambda);
+    storage.mainTable.grantReadWriteData(webSocketToWebClientRouteLambda);
 
 
 
