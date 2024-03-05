@@ -9,12 +9,14 @@
   import HomePage from "./lib/page/HomePage.svelte";
   // import VerifyOtpPage from "./lib/page/VerifyOtpPage.svelte";
   import WebSocketConnection from "./lib/util/WebSocketConnection.svelte";
-  import MapPage from "./lib/page/map/Map.svelte";
+  import MapPage from "./lib/page/map/MapPage.svelte";
 
-  import PubSubBroker from "./lib/util/pubsub-broker";
+  import PubSubBroker from "./src/pubsub-broker.js";
+  import DB from "./src/db.js";
 
 
   let pubsub = PubSubBroker();
+  let db = DB();
 
 </script>
 
@@ -30,7 +32,7 @@
       <!-- <Route path={"/sign-up"} component={SignUpPage} />
       <Route path={"/sign-in"} component={SignInPage} />
       <Route path={"/verify-otp"} component={VerifyOtpPage} /> -->
-      <Route path={"/map"} component={MapPage} {pubsub} />
+      <Route path={"/map"} component={MapPage} {pubsub} {db} />
 
     </main>
 

@@ -89,7 +89,7 @@ Feature: View map marker showing device location
 
             save Device ID, Longitude, and Latitude in indexedDb
 
-            # update GeoJSON file containing device GPS coordinates
+            update GeoJSON file containing device GPS coordinates
             
             # display alert to refresh map
 

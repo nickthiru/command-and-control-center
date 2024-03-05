@@ -4,13 +4,12 @@
 
 <script>
   import { onMount, onDestroy } from "svelte";
-  import { CdkStackApiStackWebSocketStackCA37355C as ApiStackWebSocketStack } from "../../../../cdk/outputs.json";
+  import { CdkStackApiStackWebSocketStackCA37355C as ApiStackWebSocketStack } from "../../../cdk/outputs.json";
 
   console.log("(+) Inside 'WebSocketConnection.svelte'");
 
   export let pubsub;
 
-  // let webSocket = new WebSocket(ApiStackWebSocketStack.DevStageWebSocketApiEndpoint);
   let webSocket;
 
   onMount(() => {
