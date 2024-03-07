@@ -20,8 +20,8 @@ class MapMarkerShowingDeviceLocation extends Stack {
     } = props;
 
 
-    const topic = new Topic(this, "DeviceGpsReceivedTopic", {
-      topicName: "DeviceGpsReceived",
+    const outputEventTopic = new Topic(this, "DeviceLocationsUpdatedTopic", {
+      topicName: "DeviceLocationsUpdated",
     });
 
     const lambda = new NodejsFunction(this, "UpdateDeviceLocationsOnMapLambda", {
@@ -36,30 +36,25 @@ class MapMarkerShowingDeviceLocation extends Stack {
       handler: "handler",
       depsLockFilePath: (path.join(__dirname, "../../../../../package-lock.json")),
       environment: {
-        DEVICE_GPS_RECEIVED_TOPIC_ARN: topic.topicArn,
-        DEVICE_GPS_RECEIVED_TOPIC_NAME: topic.topicName,
+        DEVICE_LOCATIONS_UPDATED_TOPIC_ARN: outputEventTopic.topicArn,
+        DEVICE_LOCATIONS_UPDATED_TOPIC_NAME: outputEventTopic.topicName,
       },
       initialPolicy: [
         new PolicyStatement({
           effect: Effect.ALLOW,
-          resources: [`arn:aws:sns:us-east-1:346761569124:${topic.topicName}`],
+          resources: [`arn:aws:sns:us-east-1:346761569124:${outputEventTopic.topicName}`],
           actions: ["sns:Publish"],
         }),
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          resources: ["arn:aws:iot:us-east-1:346761569124:thing/*"],
+          actions: [
+            "iot:DescribeThing",
+            "iot:UpdateThing",
+          ],
+        })
       ]
     });
-    // updateDeviceLocationOnMap.addToRolePolicy(new PolicyStatement({
-    //   effect: Effect.ALLOW,
-    //   resources: [`arn:aws:sqs:us-east-1:346761569124:${apiStack.websocketStack.webSocketToWebClientRouteQueue.queueName}`],
-    //   actions: ["sqs:SendMessage"],
-    // }));
-
-    // new LambdaToSqs(this, "LambdaToSqs", {
-    //   existingLambdaObj: lambda,
-    //   existingQueueObj: apiStack.websocketStack.webSocketToWebClientRouteQueue,
-    // });
-
-    // Trigger Event
-    //  iotStack.deviceMapDataReceivedTopicRule.addAction(new LambdaFunctionAction(lambda));
 
     new TopicRule(this, "DeviceGpsReceivedTopicRule", {
       // topicRuleName: "UpdateMapWithDeviceTopicRule",
@@ -71,19 +66,12 @@ class MapMarkerShowingDeviceLocation extends Stack {
     // To send message to frontend i.e. publish to WebSocketToWebClientRoute's queue
     new SnsToSqs(this, "SnsToSqs", {
       // encryptionKeyProps: { alias: `${outputEventTopic.topicName}SnsToSqsEncryptionKeyAlias` },
-      existingTopicObj: topic,
+      existingTopicObj: outputEventTopic,
       existingQueueObj: api.webSocket.webSocketToWebClientRouteQueue
     });
 
-    // To use in frontend to create PubSub topic
-    // new CfnOutput(this, `${topic.topicName}CfnOutput`, {
-    //   value: `${topic.topicName}`,
-    //   exportName: `${topic.topicName}`
-    // });
-
     new CfnOutput(this, "CfnOutput", {
-      value: `${topic.topicName}`,
-      // exportName: `${topic.topicName}`
+      value: `${outputEventTopic.topicName}`,
     });
   }
 }

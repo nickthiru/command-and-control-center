@@ -1,6 +1,11 @@
-const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns"); // CommonJS import
+const { IoTClient,
+  DescribeThingCommand,
+  UpdateThingCommand
+} = require("@aws-sdk/client-iot");
+const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
 
 
+const iotClient = new IoTClient();
 const snsClient = new SNSClient();
 
 
@@ -9,8 +14,8 @@ exports.handler = async (event) => {
   console.log("event: \n" + JSON.stringify(event, null, 2));
 
   const {
-    deviceGpsReceivedTopicArn,
-    deviceGpsReceivedTopicName,
+    deviceLocationsUpdatedTopicArn,
+    deviceLocationsUpdatedTopicName,
   } = getEnvData(process);
 
   const {
@@ -22,30 +27,33 @@ exports.handler = async (event) => {
 
   try {
 
-    // var sendMessageCommandResponse = await sqsClient.send(new SendMessageCommand({
-    //   QueueUrl: webSocketToWebClientRouteQueueUrl,
-    //   MessageBody: JSON.stringify({
-    //     triggerEvent,
-    //     deviceId,
-    //     longitude,
-    //     latitude,
-    //   }),
-    // }));
-    // console.log("sendMessageCommandResponse: " + JSON.stringify(sendMessageCommandResponse, null, 2));
-
-    // Publish to SNS Topic, which is connected to WebSocketToWebClientRoute's queue
-    const publishCommandResponse = await snsClient.send(new PublishCommand({
-      TopicArn: deviceGpsReceivedTopicArn,
-      Message: JSON.stringify({
-        event: deviceGpsReceivedTopicName,
-        deviceId,
-        longitude,
-        latitude,
-      }),
+    const describeThingResponse = await iotClient.send(new DescribeThingCommand({
+      thingName: deviceId,
     }));
-    console.log("publishCommandResponse: " + JSON.stringify(publishCommandResponse));
-    // return response;
+    // console.log("(+) res1: " + JSON.stringify(res1, null, 2));
 
+    if (!describeThingResponse.attributes.long && !describeThingResponse.attributes.lat) {
+      console.log("(+) Device does not have attributes, so adding...");
+
+      await iotClient.send(new UpdateThingCommand({
+        thingName: deviceId,
+        attributePayload: {
+          attributes: {
+            long: String(longitude),
+            lat: String(latitude),
+          }
+        }
+      }));
+
+      // Publish to SNS Topic, which is connected to WebSocketToWebClientRoute's queue
+      const publishResponse = await snsClient.send(new PublishCommand({
+        TopicArn: deviceLocationsUpdatedTopicArn,
+        Message: JSON.stringify({
+          event: deviceLocationsUpdatedTopicName,
+        }),
+      }));
+      console.log("publishResponse: " + JSON.stringify(publishResponse));
+    }
   } catch (error) {
     console.log(error);
   }
@@ -56,15 +64,15 @@ exports.handler = async (event) => {
 function getEnvData(process) {
   console.log("Inside 'getEnvData()'");
 
-  const deviceGpsReceivedTopicArn = process.env.DEVICE_GPS_RECEIVED_TOPIC_ARN;
-  console.log("deviceGpsReceivedTopicArn: " + deviceGpsReceivedTopicArn);
+  const deviceLocationsUpdatedTopicArn = process.env.DEVICE_LOCATIONS_UPDATED_TOPIC_ARN;
+  console.log("deviceGpsReceivedTopicArn: " + deviceLocationsUpdatedTopicArn);
 
-  const deviceGpsReceivedTopicName = process.env.DEVICE_GPS_RECEIVED_TOPIC_NAME;
-  console.log("deviceGpsReceivedTopicName: " + deviceGpsReceivedTopicName);
+  const deviceLocationsUpdatedTopicName = process.env.DEVICE_LOCATIONS_UPDATED_TOPIC_NAME;
+  console.log("deviceGpsReceivedTopicName: " + deviceLocationsUpdatedTopicName);
 
   return {
-    deviceGpsReceivedTopicArn,
-    deviceGpsReceivedTopicName,
+    deviceLocationsUpdatedTopicArn,
+    deviceLocationsUpdatedTopicName,
   };
 }
 

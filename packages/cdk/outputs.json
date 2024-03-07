@@ -4,10 +4,10 @@
     "ExportsOutputRefMainTable74195DAB4503BD7E": "CdkStackStorageStack887CC089-MainTable74195DAB-DDWVIX9VVZX5"
   },
   "CdkStackMapStackMapMarkerShowingDeviceLocationD8CD2916": {
-    "CfnOutput": "DeviceGpsReceived",
-    "ExportsOutputRefDeviceGpsReceivedTopic280E4352ACB30C51": "arn:aws:sns:us-east-1:346761569124:DeviceGpsReceived"
+    "CfnOutput": "DeviceLocationsUpdated",
+    "ExportsOutputRefDeviceLocationsUpdatedTopic501460321DD67420": "arn:aws:sns:us-east-1:346761569124:DeviceLocationsUpdated"
   },
   "CdkStackApiStackWebSocketStackCA37355C": {
-    "DevStageWebSocketApiEndpoint": "wss://gimdnx6h3b.execute-api.us-east-1.amazonaws.com/dev"
+    "DevStageWebSocketApiEndpoint": "wss://rahuv0li4c.execute-api.us-east-1.amazonaws.com/dev"
   }
 }

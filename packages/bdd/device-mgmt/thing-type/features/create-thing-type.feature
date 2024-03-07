@@ -5,44 +5,95 @@ Feature: Create Thing Type
 
       @Api @Web?
       Scenario: Successfully create a Thing Type
-        Given ?
 
-        When ?
+        Bounded context: Device management
 
-          # AWS
+        Trigger:
+          - Request from user/frontend
 
-            # IoT
+        Primary input:
+          -
 
-              # @aws-sdk/client-iot
+        Other input:
+          -
 
-              # CreateThingTypeCommand
+        Output event (on success):
+          - 
 
-              # Input:
-              #   - thingTypeName
-              #   - thingTypeDescription
-              
-              # Output:
-              #   - thingTypeName
-              #   - thingTypeArn
-              #   - thingTypeId
+        Output event (on error):
+          -
+
+        Side-effect:
+          -
 
 
-            # API
+        Data:
+
+          ? There should be an option to select whether ThingType has static GPS (to display on map). If so, then:
+            add ThingType attributes:
+              - staticGpsEnabled: boolean, set to true
+              - longitude: number
+              - latitude: number
+
+
+
+        AWS:
+
+          IoT TopicRule
+            - 
+          
+          SNS
+            - 
+
+
+          API:
+            
+            HTTP:
+
+              POST /thing-types/
+
+              Parameters:
+                -
+
+              Response:
+
 
               # "POST /device-mgmt/thing-type"
 
               # Add request validation
 
 
-            # Lambda
+        Web:
+
+          PubSub:
+            - 
+          
+          Store:
+          - 
+
+
+        Workflow:
+
+          Backend:
+
+            
+
+
+          Frontend:
+
+            Create Thing Type form
 
 
 
-          # Web
-
-            # Create Thing Type form
 
 
+
+
+
+
+        Given ?
+
+        When ?
 
         Then ?
 

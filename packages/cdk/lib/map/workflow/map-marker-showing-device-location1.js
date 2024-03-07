@@ -3,9 +3,10 @@ const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 // const { Duration } = require("aws-cdk-lib");
 const { PolicyStatement, Effect } = require("aws-cdk-lib/aws-iam");
-const { LambdaToSqs } = require("@aws-solutions-constructs/aws-lambda-sqs");
+const { LambdaFunctionAction } = require("@aws-cdk/aws-iot-actions-alpha");
 const { TopicRule, IotSql } = require("@aws-cdk/aws-iot-alpha");
 const { Topic } = require("aws-cdk-lib/aws-sns");
+const { SnsToSqs } = require("@aws-solutions-constructs/aws-sns-sqs");
 const path = require("path");
 
 
@@ -19,8 +20,9 @@ class MapMarkerShowingDeviceLocation extends Stack {
     } = props;
 
 
-
-    const topic = new Topic(this, "DeviceGpsReceivedTopic");
+    const topic = new Topic(this, "DeviceGpsReceivedTopic", {
+      topicName: "DeviceGpsReceived",
+    });
 
     const lambda = new NodejsFunction(this, "UpdateDeviceLocationsOnMapLambda", {
       bundling: {
@@ -40,8 +42,8 @@ class MapMarkerShowingDeviceLocation extends Stack {
       initialPolicy: [
         new PolicyStatement({
           effect: Effect.ALLOW,
-          resources: [`arn:aws:sqs:us-east-1:346761569124:${apiStack.websocketStack.webSocketToWebClientRouteQueue.queueName}`],
-          actions: ["sqs:SendMessage"],
+          resources: [`arn:aws:sns:us-east-1:346761569124:${topic.topicName}`],
+          actions: ["sns:Publish"],
         }),
       ]
     });
@@ -59,14 +61,14 @@ class MapMarkerShowingDeviceLocation extends Stack {
     // Trigger Event
     //  iotStack.deviceMapDataReceivedTopicRule.addAction(new LambdaFunctionAction(lambda));
 
-    const topicRule = new TopicRule(this, "DeviceGpsReceivedTopicRule", {
+    new TopicRule(this, "DeviceGpsReceivedTopicRule", {
       // topicRuleName: "UpdateMapWithDeviceTopicRule",
       description: "Longitude and latitude coordinates of a device, to update the map with a marker",
       sql: IotSql.fromStringAsVer20160323("SELECT topic(3) AS deviceId, lo AS longitude, la AS latitude FROM 'dt/map/+'"),
       actions: [new LambdaFunctionAction(lambda)]
     });
 
-    // To send message to frontend
+    // To send message to frontend i.e. publish to WebSocketToWebClientRoute's queue
     new SnsToSqs(this, "SnsToSqs", {
       // encryptionKeyProps: { alias: `${outputEventTopic.topicName}SnsToSqsEncryptionKeyAlias` },
       existingTopicObj: topic,
@@ -74,9 +76,14 @@ class MapMarkerShowingDeviceLocation extends Stack {
     });
 
     // To use in frontend to create PubSub topic
-    new CfnOutput(this, `${topic.topicName}CfnOutput`, {
+    // new CfnOutput(this, `${topic.topicName}CfnOutput`, {
+    //   value: `${topic.topicName}`,
+    //   exportName: `${topic.topicName}`
+    // });
+
+    new CfnOutput(this, "CfnOutput", {
       value: `${topic.topicName}`,
-      exportName: `${topic.topicName}TopicName`
+      // exportName: `${topic.topicName}`
     });
   }
 }

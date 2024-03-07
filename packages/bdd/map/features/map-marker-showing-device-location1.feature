@@ -21,7 +21,7 @@ Feature: View map marker showing device location
           -
 
         Output event (on success):
-          - DeviceLocationsUpdated
+          -
 
         Output event (on error):
           -
@@ -40,7 +40,7 @@ Feature: View map marker showing device location
             - DeviceGpsReceived
           
           SNS
-            - DeviceLocationsUpdated
+            - DeviceGpsReceived
 
 
           API:
@@ -48,58 +48,55 @@ Feature: View map marker showing device location
             WebSocket:
 
               SnsToSqs: toWebClientWebSocketRouteQueue
-            
-            HTTP:
-
-              GET /map/devices
-
-              Parameters:
-                -
-
-              Response:
 
 
         Web:
 
           PubSub:
-            - DeviceLocationsUpdated
+            - DeviceGpsReceived
           
           Store:
-          - Fetch DeviceLocations file
+          - GeoJSON file
 
 
         Workflow:
 
           Backend:
 
-            # device sends payload to MQTT topic "dt/map/<ThingName>"
+            device sends payload to MQTT topic "dt/map/<ThingName>"
+          
+            Fn: SaveDeviceGpsIfFirstTimeConnecting
+              Input:
+                - Device payload
+              Output event:
+                - DeviceGpsReceived
 
-            # check the Device Registry for the device to see if GPS coordinates exist.
-            
-            # if there are no coordinates (we can assume that the device is connecting for the first time), then:
+              check the Device Registry for the device to see if GPS coordinates exist.
+              
+              if there are no coordinates (we can assume that the device is connecting for the first time), then:
 
-            #   save them in Device Registry
+                save them in Device Registry
+                
+                if coordinates exist, then compare the values and send an alert if the coordinates are out of acceptable range.
 
-            #   publish to output event topic
-
-            if coordinates exist, then:
-
-              compare them with the incoming coordinates value and send an alert if the coordinates are out of acceptable range.
-
-
+                    TODO
+                          
+                publish GPS data to SNS
+          
           Frontend:
 
-            receive and publish the event topic to PubSub
+            receive and publish the device payload to PubSub
 
-            event should trigger an alert (display) to refresh map
+            save Device ID, Longitude, and Latitude in indexedDb
 
-            when alert is clicked, then:
+            update GeoJSON file containing device GPS coordinates
+            
+            # display alert to refresh map
 
-              fetch list of "static GPS enabled devices" type and their Ids, Longitude, and Latitude attributes
+            # when alert is clicked, then
+            #   read GeoJSON file and set/update svelte store holding the same
 
-            for each device:
-
-              display disply a marker on the map
+            #   it should disply a new marker
 
 
 
