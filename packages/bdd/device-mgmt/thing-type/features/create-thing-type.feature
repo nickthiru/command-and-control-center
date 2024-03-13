@@ -8,80 +8,71 @@ Feature: Create Thing Type
 
         Bounded context: Device management
 
-        Trigger:
-          - Request from user/frontend
+        Infra:
 
-        Primary input:
-          -
+          CDK:
 
-        Other input:
-          -
+            IoT:
 
-        Output event (on success):
-          - 
-
-        Output event (on error):
-          -
-
-        Side-effect:
-          -
-
-
-        Data:
-
-          ? There should be an option to select whether ThingType has static GPS (to display on map). If so, then:
-            add ThingType attributes:
-              - staticGpsEnabled: boolean, set to true
-              - longitude: number
-              - latitude: number
-
-
-
-        AWS:
-
-          IoT TopicRule
-            - 
-          
-          SNS
-            - 
-
-
-          API:
+              IotClient
             
-            HTTP:
+            Lambda (API Proxy)
 
-              POST /thing-types/
+            API:
+              
+              HTTP:
 
-              Parameters:
-                -
+                POST /thing-type/
 
-              Response:
+                Body Parameter:
+
+                  ThingTypeName: string
+
+                  If option of whether Things of this Type should be displayed on the map is selected, then:
+                  add ThingType attributes:
+
+                    StaticGpsEnabled: boolean, set to true
+                    Longitude: number
+                    Latitude: number
+                  
+
+                Response:
 
 
-              # "POST /device-mgmt/thing-type"
-
-              # Add request validation
+                # Add request validation
 
 
-        Web:
+          Web:
+            
+            Store:
+              - 
 
-          PubSub:
-            - 
-          
-          Store:
-          - 
 
 
         Workflow:
 
-          Backend:
+          AWS:
 
             
 
 
-          Frontend:
+          Web:
 
             Create Thing Type form
+
+              Data:
+
+                ThingTypeName: string, required
+
+                Description: string, optional
+
+                If option of whether Things of this Type should be displayed on the map is selected, then:
+                  add ThingType attributes:
+                    - staticGpsEnabled: boolean, set to true
+                    - longitude: number
+                    - latitude: number
+            
+            Send HTTP request 
 
 
 
