@@ -132,13 +132,13 @@ class WebSocketStack extends Stack {
     //     // Authorize lambda to publish to all SNS topics
     //     new PolicyStatement({
     //       effect: Effect.ALLOW,
-    //       resources: ["arn:aws:sns:us-east-1:346761569124:*"],
+    //       resources: ["arn:aws:sns:us-east-1:654654543926:*"],
     //       actions: ["sns:Publish"]
     //     }),
     //     // Authorize cognito users, with temp STS token, to publish to SNS
     //     new PolicyStatement({
     //       effect: Effect.ALLOW,
-    //       resources: ["arn:aws:sts::346761569124:assumed-role/*"],
+    //       resources: ["arn:aws:sts::654654543926:assumed-role/*"],
     //       actions: ["sns:Publish"]
     //     })
     //   ]
@@ -153,7 +153,7 @@ class WebSocketStack extends Stack {
         // Authorize lambda to 'post-to-connection'
         new PolicyStatement({
           effect: Effect.ALLOW,
-          resources: [`arn:aws:execute-api:us-east-1:346761569124:${webSocketApi.apiId}/${devWebSocketStage.stageName}/POST/@connections/*`],
+          resources: [`arn:aws:execute-api:us-east-1:654654543926:${webSocketApi.apiId}/${devWebSocketStage.stageName}/POST/@connections/*`],
           actions: ["execute-api:Invoke", "execute-api:ManageConnections"]
         }),
       ],

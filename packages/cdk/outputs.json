@@ -1,13 +1,17 @@
 {
   "CdkStackStorageStack887CC089": {
-    "ExportsOutputFnGetAttMainTable74195DABArnE0EC388B": "arn:aws:dynamodb:us-east-1:346761569124:table/CdkStackStorageStack887CC089-MainTable74195DAB-DDWVIX9VVZX5",
-    "ExportsOutputRefMainTable74195DAB4503BD7E": "CdkStackStorageStack887CC089-MainTable74195DAB-DDWVIX9VVZX5"
+    "ExportsOutputFnGetAttMainTable74195DABArnE0EC388B": "arn:aws:dynamodb:us-east-1:654654543926:table/CdkStackStorageStack887CC089-MainTable74195DAB-100P16FWC2J9H",
+    "ExportsOutputRefMainTable74195DAB4503BD7E": "CdkStackStorageStack887CC089-MainTable74195DAB-100P16FWC2J9H"
   },
   "CdkStackMapStackMapMarkerShowingDeviceLocationD8CD2916": {
-    "CfnOutput": "DeviceLocationsUpdated",
-    "ExportsOutputRefDeviceLocationsUpdatedTopic501460321DD67420": "arn:aws:sns:us-east-1:346761569124:DeviceLocationsUpdated"
+    "ExportsOutputRefIotHandlerConstructDeviceLocationsUpdatedTopic57D0AA2858AA579E": "arn:aws:sns:us-east-1:654654543926:DeviceLocationsUpdated",
+    "ExportsOutputFnGetAttGetDevicesContructUpdateDeviceLocationsOnMapLambda3E5E2ABEArn6BF49D07": "arn:aws:lambda:us-east-1:654654543926:function:CdkStackMapStackMapMarker-GetDevicesContructUpdate-eviwerpiopDl",
+    "IotHandlerConstructCfnOutputDADD8568": "DeviceLocationsUpdated"
+  },
+  "CdkStackApiStackHttpStack813D57AD": {
+    "RestApiEndpoint0551178A": "https://6uknqmnzz6.execute-api.us-east-1.amazonaws.com/prod/"
   },
   "CdkStackApiStackWebSocketStackCA37355C": {
-    "DevStageWebSocketApiEndpoint": "wss://rahuv0li4c.execute-api.us-east-1.amazonaws.com/dev"
+    "DevStageWebSocketApiEndpoint": "wss://w61y58h9y2.execute-api.us-east-1.amazonaws.com/dev"
   }
 }

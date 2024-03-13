@@ -1,4 +1,5 @@
-const { IoTClient,
+const {
+  IoTClient,
   DescribeThingCommand,
   UpdateThingCommand
 } = require("@aws-sdk/client-iot");
@@ -10,7 +11,7 @@ const snsClient = new SNSClient();
 
 
 exports.handler = async (event) => {
-  console.log("Inside 'map-marker-showing-device-location' handler");
+  console.log("Inside 'iot-handler' handler");
   console.log("event: \n" + JSON.stringify(event, null, 2));
 
   const {

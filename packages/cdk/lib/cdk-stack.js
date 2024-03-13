@@ -3,7 +3,7 @@ const { Stack } = require('aws-cdk-lib');
 // const { AccountMgmtStack } = require('./account-mpmt/main-stack');
 const { ApiStack } = require('./api/api-stack');
 // const { DeviceMgmtStack } = require('./device-mgmt/device-mgmt-stack');
-// const { PolicyStack } = require('./policy/policy-stack');
+const { PolicyStack } = require('./policy/policy-stack');
 const { StorageStack } = require('./storage/storage-stack');
 const { MapStack } = require('./map/map-stack');
 // const { IotStack } = require('./iot/iot-stack');
@@ -28,7 +28,7 @@ class CdkStack extends Stack {
 
     // const auth = new AuthStack(this, "AuthStack")
 
-    // const policy = new PolicyStack(this, "PolicyStack");
+    const policy = new PolicyStack(this, "PolicyStack");
 
     // const sns = new SnsStack(this, "SnsStack");
 

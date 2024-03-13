@@ -1,5 +1,6 @@
 const { Stack } = require("aws-cdk-lib");
-const { MapMarkerShowingDeviceLocation } = require("./workflow/map-marker-showing-device-location");
+const { MapMarkerShowingDeviceLocationStack } = require("./workflow/map-marker-showing-device-location/map-marker-showing-device-location-stack");
+const { MapEndpointsStack } = require("./api-endpoints/map-endpoints-stack");
 
 
 class MapStack extends Stack {
@@ -12,9 +13,14 @@ class MapStack extends Stack {
     } = props;
 
 
-    new MapMarkerShowingDeviceLocation(this, "MapMarkerShowingDeviceLocation", {
+    const mapMarkerShowingDeviceLocation = new MapMarkerShowingDeviceLocationStack(this, "MapMarkerShowingDeviceLocation", {
       api,
-    })
+    });
+
+    new MapEndpointsStack(this, "MapEndpointsStack", {
+      api,
+      mapMarkerShowingDeviceLocation,
+    });
   }
 }
 

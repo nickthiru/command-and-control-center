@@ -99,7 +99,7 @@ Feature: View map marker showing device location
 
             for each device:
 
-              display disply a marker on the map
+              display a marker on the map
 
 
 

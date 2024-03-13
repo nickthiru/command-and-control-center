@@ -1,4 +1,5 @@
-const { Stack, CfnOutput } = require("aws-cdk-lib");
+const { Construct } = require("constructs");
+const { CfnOutput } = require("aws-cdk-lib");
 const { NodejsFunction } = require("aws-cdk-lib/aws-lambda-nodejs");
 const { Runtime } = require("aws-cdk-lib/aws-lambda");
 // const { Duration } = require("aws-cdk-lib");
@@ -10,10 +11,10 @@ const { SnsToSqs } = require("@aws-solutions-constructs/aws-sns-sqs");
 const path = require("path");
 
 
-class MapMarkerShowingDeviceLocation extends Stack {
+class IotHandlerConstruct extends Construct {
   constructor(scope, id, props) {
     super(scope, id, props);
-    console.log("(+) Inside 'MapMarkerShowingDeviceLocation'");
+    console.log("(+) Inside 'IotHandlerConstruct'");
 
     const {
       api,
@@ -32,9 +33,9 @@ class MapMarkerShowingDeviceLocation extends Stack {
       // memorySize: 1024,
       // memorySize: 512,
       // timeout: Duration.minutes(1),
-      entry: (path.join(__dirname, "../../../src/lambda/map/map-marker-showing-device-location.js")),
+      entry: (path.join(__dirname, "../../../../src/lambda/map/map-marker-showing-device-location/iot-handler.js")),
       handler: "handler",
-      depsLockFilePath: (path.join(__dirname, "../../../../../package-lock.json")),
+      depsLockFilePath: (path.join(__dirname, "../../../../../../package-lock.json")),
       environment: {
         DEVICE_LOCATIONS_UPDATED_TOPIC_ARN: outputEventTopic.topicArn,
         DEVICE_LOCATIONS_UPDATED_TOPIC_NAME: outputEventTopic.topicName,
@@ -42,12 +43,12 @@ class MapMarkerShowingDeviceLocation extends Stack {
       initialPolicy: [
         new PolicyStatement({
           effect: Effect.ALLOW,
-          resources: [`arn:aws:sns:us-east-1:346761569124:${outputEventTopic.topicName}`],
+          resources: [`arn:aws:sns:us-east-1:654654543926:${outputEventTopic.topicName}`],
           actions: ["sns:Publish"],
         }),
         new PolicyStatement({
           effect: Effect.ALLOW,
-          resources: ["arn:aws:iot:us-east-1:346761569124:thing/*"],
+          resources: ["arn:aws:iot:us-east-1:654654543926:thing/*"],
           actions: [
             "iot:DescribeThing",
             "iot:UpdateThing",
@@ -76,4 +77,4 @@ class MapMarkerShowingDeviceLocation extends Stack {
   }
 }
 
-module.exports = { MapMarkerShowingDeviceLocation };
+module.exports = { IotHandlerConstruct };
