@@ -6,7 +6,7 @@ info:
   description: IoT Command and Control Centre App
 
 servers:
-  - url: https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod/
+  - url: https://ztr18g9zbf.execute-api.us-east-1.amazonaws.com/prod
     description: Basepath
 
 paths:
