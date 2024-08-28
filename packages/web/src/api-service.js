@@ -3,7 +3,7 @@
 // const PostmanMockServerUrl = "https://246e037d-72f1-4123-9332-568319d38935.mock.pstmn.io";
 // const baseUrl = PostmanMockServerUrl;
 
-import { CdkStackApiStackB9BC31F4 as BackendApi } from "../../cdk/outputs.json";
+import { CdkStackApiStackHttpStack813D57AD as BackendApi } from "../../cdk/outputs.json";
 const baseUrl = BackendApi.RestApiEndpoint0551178A;
 
 
@@ -29,7 +29,6 @@ async function post(endpoint, data) {
       // To Do
     });
 }
-
 
 export default {
   get,

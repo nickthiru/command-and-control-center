@@ -24,9 +24,19 @@
     });
   
     webSocket.addEventListener("message", (event) => {
-      let ed = JSON.parse(event.data);
-
-      pubsub.queue(ed.event, ed.data);
+      let data = JSON.parse(event.data);
+  
+      let eventTopic = data.event;
+  
+      let eventData = {
+        deviceId: data.deviceId,
+        longitude: data.longitude,
+        latitude: data.latitude,
+      };
+      console.log("(+) eventTopic: " + eventTopic);
+      console.log("(+) eventData: " + JSON.stringify(eventData));
+  
+      pubsub.queue(eventTopic, eventData);
     });
   
     webSocket.addEventListener("close", (event) => {

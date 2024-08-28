@@ -51,6 +51,7 @@ exports.handler = async (event) => {
         TopicArn: deviceLocationsUpdatedTopicArn,
         Message: JSON.stringify({
           event: deviceLocationsUpdatedTopicName,
+          data: "N/A",
         }),
       }));
       console.log("publishResponse: " + JSON.stringify(publishResponse));

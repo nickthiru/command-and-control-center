@@ -27,6 +27,8 @@ export default function PubSubBroker() {
 
       PubSub.subscribe(topic, subFn);
     },
-    test: () => console.log("pubsub test"),
+    unsubscribe: (token) => {
+      PubSub.unsubscribe(token);
+    },
   }
 }

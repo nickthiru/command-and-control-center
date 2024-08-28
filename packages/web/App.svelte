@@ -19,7 +19,7 @@
 
 </script>
 
-<!-- <WebSocketConnection {pubsub}/> -->
+<WebSocketConnection {pubsub}/>
 
 <Router>
     <NavBar />
@@ -29,7 +29,9 @@
       <!-- <Route path={"/sign-up"} component={SignUpPage} />
       <Route path={"/sign-in"} component={SignInPage} />
       <Route path={"/verify-otp"} component={VerifyOtpPage} /> -->
+
+      <Route path={"/map"} component={MapPage} {pubsub}/>
       <!-- <Route path={"/map"} component={MapPage} {pubsub} {db} /> -->
-      <Route path={"/map"} component={MapPage} />
+      <!-- <Route path={"/map"} component={MapPage} /> -->
     </main>
 </Router>
